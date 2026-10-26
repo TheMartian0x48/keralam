@@ -1,0 +1,24 @@
+{
+  "name": "keralam",
+  "private": true,
+  "type": "module",
+  "description": "Frontend bundle for the keralam demo: frontend/js -> assets/keralam.js",
+  "scripts": {
+    "build": "esbuild frontend/js/keralam.ts --bundle --format=iife --target=es2020 --outfile=assets/keralam.js --log-level=warning",
+    "build:min": "npm run build -- --minify",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hotwired/stimulus": "^3.2.2",
+    "@phosphor-icons/web": "^2.1.2",
+    "quill": "^2.0.3",
+    "quill-table-better": "^1.2.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0",
+    "typescript": "^5.7.0"
+  },
+  "overrides": {
+    "@types/lodash": "4.17.26"
+  }
+}

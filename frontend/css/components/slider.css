@@ -1,0 +1,65 @@
+/* Slider Component Styles
+ *
+ * A label and a live readout around an input_range. The thumb and the track are styled in
+ * input.css (.input-range); this file only lays out the wrapper and fills the track up to
+ * the thumb from --slider-pct, which the component writes and keralam-slider keeps current.
+ *
+ * Structure:
+ *   .slider-container
+ *     .slider-header
+ *       label.slider-label
+ *       output.slider-value
+ *     input.input-range
+ */
+
+.slider-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    width: 100%;
+}
+
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-size-default);
+    color: var(--color-text-secondary);
+}
+
+.slider-label {
+    font-weight: var(--font-weight-default);
+}
+
+.slider-value {
+    font-variant-numeric: tabular-nums;
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* The filled part of the track, up to the thumb. */
+.slider-container .input-range::-webkit-slider-runnable-track {
+    background: linear-gradient(
+        to right,
+        var(--color-primary) var(--slider-pct, 0%),
+        var(--color-bg-tertiary) var(--slider-pct, 0%)
+    );
+}
+
+.slider-container .input-range::-moz-range-progress {
+    height: var(--input-range-track);
+    background: var(--color-primary);
+    border-radius: var(--radius-full);
+}
+
+.slider-container .input-range--error::-webkit-slider-runnable-track {
+    background: linear-gradient(
+        to right,
+        var(--color-danger) var(--slider-pct, 0%),
+        var(--color-bg-tertiary) var(--slider-pct, 0%)
+    );
+}
+
+.slider-container .input-range--error::-moz-range-progress {
+    background: var(--color-danger);
+}

@@ -1,0 +1,53 @@
+/* General Layout Utilities */
+
+.page-container {
+    padding-top: var(--spacing-10);
+    padding-bottom: var(--spacing-10);
+}
+
+.page-header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    margin-bottom: var(--spacing-8);
+}
+
+@media (min-width: 768px) {
+    .page-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.page-title {
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-primary);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.page-intro {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-lg);
+    margin: 0;
+}
+
+.section-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--spacing-6);
+}
+
+@media (min-width: 768px) {
+    .section-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .section-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

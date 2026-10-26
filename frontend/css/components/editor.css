@@ -1,0 +1,987 @@
+/* Editor Component Styles
+ *
+ * Quill-backed rich text editor form field.
+ *
+ * Structure:
+ *   .editor                          host wrapper
+ *     .editor__toolbar               Quill toolbar container (theme=snow)
+ *     .editor__content               contentEditable (Quill root)
+ *     input[type="hidden"]           carries the Delta JSON on submit
+ *     .editor__footer                optional counter wrapper
+ *       .editor__counter             char count + soft MaxLength indicator
+ *
+ * Quill's own classes (.ql-toolbar, .ql-editor, .ql-formats, .ql-stroke,
+ * .ql-fill, .ql-picker, .ql-active, .ql-expanded, etc.) are styled by
+ * Quell's own stylesheet (vendor/quill) which we override here so the
+ * chrome matches Keralam' design tokens.
+ */
+
+.editor {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    width: 100%;
+    background-color: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    --keralam-editor-radius: var(--radius-default);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.editor:hover:not(.editor--disabled) {
+    border-color: var(--color-border-dark);
+}
+
+.editor:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring-primary);
+}
+
+.editor__content {
+    flex: 1 1 auto;
+    min-height: 0;
+    min-height: 6rem;
+    width: 100%;
+    overflow-y: auto;
+    outline: none;
+    color: var(--color-text-primary);
+    cursor: text;
+    position: relative;
+    background-color: var(--color-bg);
+}
+
+/* Quill renders its content surface inside .editor__content. Apply
+   spacing/typography to the surface Quill actually controls. */
+.editor__content .ql-editor {
+    min-height: 6rem;
+    padding: var(--spacing-3) var(--spacing-4);
+    font-family: inherit;
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-default);
+    color: var(--color-text-primary);
+    outline: none;
+}
+
+.editor__content .ql-editor.ql-blank::before {
+    color: var(--color-text-muted);
+    font-style: normal;
+    left: var(--spacing-4);
+    right: var(--spacing-4);
+}
+
+.editor__content .ql-editor p {
+    margin: 0 0 var(--spacing-2);
+}
+
+.editor__content .ql-editor h1,
+.editor__content .ql-editor h2,
+.editor__content .ql-editor h3,
+.editor__content .ql-editor h4,
+.editor__content .ql-editor h5,
+.editor__content .ql-editor h6 {
+    margin: var(--spacing-4) 0 var(--spacing-2);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+    color: var(--color-text-primary);
+}
+
+.editor__content .ql-editor h1 {
+    font-size: var(--font-size-3xl);
+}
+
+.editor__content .ql-editor h2 {
+    font-size: var(--font-size-2xl);
+}
+
+.editor__content .ql-editor h3 {
+    font-size: var(--font-size-xl);
+}
+
+.editor__content .ql-editor h4 {
+    font-size: var(--font-size-lg);
+}
+
+.editor__content .ql-editor h5,
+.editor__content .ql-editor h6 {
+    font-size: var(--font-size-base);
+}
+
+.editor__content .ql-editor blockquote {
+    margin: var(--spacing-3) 0;
+    padding: var(--spacing-2) var(--spacing-4);
+    border-left: var(--border-width-default) solid var(--color-border-dark);
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+.editor__content .ql-editor pre.ql-syntax,
+.editor__content .ql-editor pre {
+    margin: var(--spacing-2) 0;
+    padding: var(--spacing-2) var(--spacing-3);
+    background-color: var(--color-bg-secondary);
+    border-radius: var(--radius-default);
+    color: var(--color-text-primary);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    overflow-x: auto;
+}
+
+.editor__content .ql-editor ol,
+.editor__content .ql-editor ul {
+    margin: 0 0 var(--spacing-2);
+    padding-inline-start: var(--spacing-6);
+}
+
+.editor__content .ql-editor a {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.editor__content .ql-editor a:hover {
+    color: var(--color-primary-dark);
+}
+
+.editor__content .ql-editor img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-sm);
+}
+
+/* Error state */
+.editor--error {
+    border-color: var(--color-danger);
+    background-color: var(--color-danger-subtle-bg);
+}
+
+.editor--error:focus-within {
+    border-color: var(--color-danger);
+    box-shadow: var(--focus-ring-danger);
+}
+
+/* Disabled state */
+.editor--disabled {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-muted);
+    border-color: var(--color-border-light);
+    cursor: not-allowed;
+    opacity: var(--opacity-muted, 0.65);
+}
+
+.editor--disabled .ql-editor {
+    cursor: not-allowed;
+    color: var(--color-text-muted);
+}
+
+/* Toolbar */
+.editor__toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: var(--spacing-1) var(--spacing-2);
+    background: var(--color-bg);
+    border-top-left-radius: var(--keralam-editor-radius);
+    border-top-right-radius: var(--keralam-editor-radius);
+    flex: 0 0 auto;
+}
+
+.editor__toolbar.ql-toolbar {
+    border-top-left-radius: var(--keralam-editor-radius);
+    border-top-right-radius: var(--keralam-editor-radius);
+}
+
+.editor--disabled .editor__toolbar {
+    opacity: var(--opacity-muted, 0.65);
+    pointer-events: none;
+}
+
+/* Footer + counter */
+.editor__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: var(--spacing-1) var(--spacing-4) var(--spacing-2);
+    border-bottom-left-radius: var(--keralam-editor-radius);
+    border-bottom-right-radius: var(--keralam-editor-radius);
+}
+
+.editor__counter {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.editor__counter--over {
+    color: var(--color-danger);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* ----------------------------------------------------------------
+ * Quill Snow theme overrides — match Keralam design tokens.
+ * Keralam icons render as <span class="icon icon--sm"><svg>...</svg></span>,
+ * so the SVG inherits currentColor from the button — no need to
+ * override .ql-stroke / .ql-fill (Quill's default glyph pipeline).
+ * ---------------------------------------------------------------- */
+
+/* Keralam icons inside the toolbar render at native 24×24 viewBox size
+   so 24px stroke paths render at native pixel width (and 2.5–3px
+   strokes stay legible). Toolbar buttons stay 32px (var(--spacing-8));
+   24px icon leaves 4px padding on each side, matching GitHub's
+   editor toolbar proportions. */
+.editor .ql-toolbar svg {
+    width: var(--spacing-6);
+    height: var(--spacing-6);
+    display: block;
+}
+
+/* Quill's bundled snow theme draws a 1px border around the content
+   container. The .editor host already provides the outer border, so drop
+   the inner one to avoid a double border. The `border-top: 0` half of
+   the same selector stays — it collapses the top edge so the toolbar
+   and content share a single dividing line. */
+.editor .ql-container {
+    border: none;
+}
+
+/* ----------------------------------------------------------------
+ * Quill toolbar chrome — replaces quill.snow.css for the classes
+ * Quill's runtime attaches. Format buttons use the Keralam Button
+ * primitive (Variant: Secondary, Shape: Outline) so only the
+ * `.btn` overrides below are needed; the bare `.ql-toolbar` rules
+ * cover the toolbar container itself.
+ * ---------------------------------------------------------------- */
+.editor .ql-toolbar {
+    box-sizing: border-box;
+    font-family: var(--font-primary);
+    padding: var(--spacing-1) var(--spacing-2);
+    background: var(--color-bg);
+    border: none;
+    border-bottom: var(--border-width-default) solid var(--color-border);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.editor .ql-toolbar .ql-formats {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    margin: 0 var(--spacing-2) 0 0;
+    vertical-align: middle;
+}
+
+/* Keralam Button integration (button.templ:89-112 emits
+ * `<button class="btn btn--secondary btn--outline btn--md ql-X">`).
+ * Override .btn's default padding, font-size, and gap so the
+ * 32×32 icon-button shape survives; defer hover/focus/active
+ * to Keralam's CSS rules for `btn--secondary btn--outline`. */
+.editor .ql-toolbar button.btn {
+    width: var(--spacing-8);
+    height: var(--spacing-8);
+    padding: 0;
+    font-size: inherit;
+    line-height: 0;
+    gap: 0;
+}
+
+.editor .ql-toolbar button.btn:focus-visible {
+    box-shadow: var(--focus-ring-primary);
+}
+
+.editor .ql-toolbar button.btn[aria-pressed="true"] {
+    background-color: var(--color-primary-subtle-bg);
+    color: var(--color-primary-dark);
+    border-color: var(--color-primary);
+}
+
+/* SVG sizing for any icon Quill writes into a button (in case we
+ * ever re-introduce a buildButtons code path); matches the 20×20
+ * we set on .editor .ql-toolbar svg below. */
+.editor .ql-toolbar button svg {
+    display: block;
+}
+
+/* ----------------------------------------------------------------
+ * Table-size dropdown — sits inline in the format-toolbar row between
+ * [link] and [img]. Native <details>/<summary> pattern via the Keralam
+ * Dropdown primitive; the summary uses btn--text shape (no border,
+ * no fill, just label + chevron) so the trigger reads as a control
+ * rather than a button. Keralam's own button.css handles idle / hover /
+ * focus / active states; we only override color tokens to match the
+ * editor's idle/active palette and add a tertiary background tint on
+ * the [open] state so the trigger reads as "currently selected".
+ * ---------------------------------------------------------------- */
+.editor__toolbar .dropdown.editor__table-dropdown>summary.dropdown__trigger {
+    color: var(--color-text-secondary);
+}
+
+.editor__toolbar .dropdown.editor__table-dropdown[open]>summary.dropdown__trigger {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.editor__toolbar .dropdown.editor__table-dropdown .dropdown__menu {
+    min-width: 9rem;
+    background-color: var(--color-bg);
+    height: 150px;
+    overflow: scroll;
+}
+
+.editor--disabled .editor__table-dropdown,
+.editor--disabled .editor__table-dropdown>summary {
+    opacity: var(--opacity-muted, 0.65);
+    pointer-events: none;
+}
+
+/* ----------------------------------------------------------------
+ * Header dropdown — Paragraph / H1 / H2 / H3 packed into a single
+ * Dropdown (mirrors the table-size dropdown styling). The JS keeps
+ * the trigger label in sync with the current header format.
+ * ---------------------------------------------------------------- */
+.editor__toolbar .dropdown.editor__header-dropdown>summary.dropdown__trigger {
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-medium);
+}
+
+.editor__toolbar .dropdown.editor__header-dropdown[open]>summary.dropdown__trigger {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.editor__toolbar .dropdown.editor__header-dropdown .dropdown__menu {
+    min-width: 11rem;
+    background-color: var(--color-bg);
+}
+
+.editor--disabled .editor__header-dropdown,
+.editor--disabled .editor__header-dropdown>summary {
+    opacity: var(--opacity-muted, 0.65);
+    pointer-events: none;
+}
+
+.editor .ql-tooltip {
+    background-color: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-md);
+    color: var(--color-text-primary);
+    padding: var(--spacing-1) var(--spacing-2);
+    white-space: nowrap;
+    width: fit-content;
+    position: absolute;
+    transform: translateY(var(--spacing-1));
+    display: inline-flex;
+    align-items: center;
+}
+
+.editor .ql-tooltip input[type="text"] {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--color-text-primary);
+    font: inherit;
+    padding: var(--spacing-1) var(--spacing-2);
+    /* Force a usable width; without it the input collapses to its
+       intrinsic 0-character size (dropping quill.snow.css removed
+       Quill's width: 170px rule). */
+    width: 14rem;
+    min-width: 0;
+    display: none;
+    /* hidden by default; visible in ql-editing */
+}
+
+.editor .ql-tooltip .ql-action,
+.editor .ql-tooltip .ql-remove {
+    color: var(--color-primary);
+    text-decoration: none;
+    padding: 0 var(--spacing-2);
+    /* Make the Save / Remove anchors read as clickable buttons next to
+       the input — pointer cursor, medium weight, line-height aligned
+       with the 32px toolbar. user-select: none avoids text-selection
+       on rapid double-clicks. */
+    cursor: pointer;
+    font-weight: var(--font-weight-medium);
+    line-height: var(--spacing-8);
+    user-select: none;
+}
+
+.editor .ql-tooltip .ql-action:hover,
+.editor .ql-tooltip .ql-remove:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+/* ----------------------------------------------------------------
+ * Quill Bubble theme overrides (used when EditorThemeBubble is chosen).
+ * Floating tooltip/picker should still respect Keralam tokens.
+ * ---------------------------------------------------------------- */
+.editor .ql-bubble .ql-toolbar {
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-lg);
+}
+
+.editor .ql-bubble .ql-stroke,
+.editor .ql-bubble .ql-fill,
+.editor .ql-bubble .ql-active .ql-stroke,
+.editor .ql-bubble .ql-active .ql-fill {
+    stroke: var(--color-text-primary);
+}
+
+/* ----------------------------------------------------------------
+ * Quill table-better module — bring its UI in line with Keralam.
+ * Module classes: .ql-table-better, .ql-table-menu, etc.
+ * ---------------------------------------------------------------- */
+.editor .ql-table-better {
+    background: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    color: var(--color-text-primary);
+}
+
+.editor .ql-table-better .ql-table-menu {
+    background: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-lg);
+}
+
+.editor .ql-table-better .ql-table-menu-item {
+    color: var(--color-text-primary);
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: var(--radius-sm);
+}
+
+.editor .ql-table-better .ql-table-menu-item:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-primary);
+}
+
+.editor .ql-better-table {
+    border-collapse: collapse;
+}
+
+.editor .ql-better-table td,
+.editor .ql-better-table th {
+    border: var(--border-width-default) solid var(--color-border);
+    padding: var(--spacing-2) var(--spacing-3);
+    vertical-align: top;
+}
+
+.editor .ql-better-table th {
+    background: var(--color-bg-secondary);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* ----------------------------------------------------------------
+ * Quill core overrides — content helper classes.
+ *
+ * Hardcoded colors / font-families / font-sizes from Quill's core.styl
+ * replaced with Keralam tokens. The block / paragraph / heading /
+ * blockquote / pre / ol / ul / a / img / code-block rules are
+ * already overridden upstream — this block covers the remaining
+ * helper classes (.ql-bg-*, .ql-color-*, .ql-font-*, .ql-size-*,
+ * .ql-direction-rtl, .ql-align-*, .ql-ui).
+ * ---------------------------------------------------------------- */
+.editor .ql-container {
+    font-size: var(--font-size-sm);
+}
+
+.editor .ql-editor .ql-bg-black {
+    background-color: var(--color-text-primary);
+}
+
+.editor .ql-editor .ql-bg-red {
+    background-color: var(--color-danger);
+}
+
+.editor .ql-editor .ql-bg-orange {
+    background-color: var(--color-warning);
+}
+
+.editor .ql-editor .ql-bg-yellow {
+    background-color: var(--color-warning);
+}
+
+.editor .ql-editor .ql-bg-green {
+    background-color: var(--color-success);
+}
+
+.editor .ql-editor .ql-bg-blue {
+    background-color: var(--color-primary);
+}
+
+.editor .ql-editor .ql-bg-purple {
+    background-color: #a855f7;
+}
+
+.editor .ql-editor .ql-color-white {
+    color: var(--color-bg);
+}
+
+.editor .ql-editor .ql-color-red {
+    color: var(--color-danger);
+}
+
+.editor .ql-editor .ql-color-orange {
+    color: var(--color-warning);
+}
+
+.editor .ql-editor .ql-color-yellow {
+    color: var(--color-warning);
+}
+
+.editor .ql-editor .ql-color-green {
+    color: var(--color-success);
+}
+
+.editor .ql-editor .ql-color-blue {
+    color: var(--color-primary);
+}
+
+.editor .ql-editor .ql-color-purple {
+    color: #a855f7;
+}
+
+.editor .ql-editor .ql-font-monospace {
+    font-family: var(--font-family-mono);
+}
+
+.editor .ql-editor .ql-font-serif {
+    font-family: Georgia, "Times New Roman", serif;
+}
+
+.editor .ql-editor .ql-size-small {
+    font-size: 0.75em;
+}
+
+.editor .ql-editor .ql-size-large {
+    font-size: 1.5em;
+}
+
+.editor .ql-editor .ql-size-huge {
+    font-size: 2.5em;
+}
+
+.editor .ql-editor .ql-direction-rtl {
+    direction: rtl;
+    text-align: inherit;
+}
+
+.editor .ql-editor .ql-align-center {
+    text-align: center;
+}
+
+.editor .ql-editor .ql-align-justify {
+    text-align: justify;
+}
+
+.editor .ql-editor .ql-align-right {
+    text-align: right;
+}
+
+/* Editor content tables — bring Quill's core table styles in
+ * line with Keralam. The structural rules (table-layout: fixed,
+ * width: 100%, outline: none) are kept verbatim from Quill's
+ * core.styl because they're functional, not cosmetic; only the
+ * border / padding / vertical-align are remapped to Keralam design
+ * tokens. Plugin tables (.ql-better-table) are handled in the
+ * table-better block above. */
+.editor .ql-editor table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.editor .ql-editor table td {
+    outline: none;
+    border: var(--border-width-default) solid var(--color-border);
+    padding: var(--spacing-1) var(--spacing-2);
+    vertical-align: top;
+}
+
+/* ----------------------------------------------------------------
+ * Quill table-better module — Keralam overrides.
+ *
+ * Override the plugin's hardcoded gray/blue palette with Keralam
+ * design tokens. Scoped to `.editor` so other Quill-table-better
+ * instances outside the editor keep the plugin defaults.
+ * ---------------------------------------------------------------- */
+.editor .ql-cell-selected-after,
+.editor .ql-cell-selected::after,
+.editor .ql-cell-focused::after {
+    background-color: var(--color-primary-subtle-bg);
+}
+
+.editor .ql-cell-focused::after {
+    border: 1px solid var(--color-primary);
+}
+
+.editor .ql-table-border-shadow,
+.editor .ql-table-select-container,
+.editor .ql-table-dropdown-list,
+.editor .ql-table-dropdown-properties-list,
+.editor .ql-table-menus-container {
+    border-radius: var(--radius-default);
+    border: 1px solid var(--color-border);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-lg);
+}
+
+.editor .ql-table-menus-container {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    height: 40px;
+    width: fit-content;
+    padding: var(--spacing-1);
+    box-sizing: border-box;
+    z-index: 1;
+    background: var(--color-bg-secondary);
+}
+
+.editor .ql-table-triangle-up:not(.ql-table-triangle-none)::before,
+.editor .ql-table-triangle-down:not(.ql-table-triangle-none)::before {
+    border-color: transparent;
+}
+
+.editor .ql-table-triangle-up:not(.ql-table-triangle-none)::before {
+    bottom: -20px;
+    border-top-color: var(--shadow-lg) !important;
+}
+
+.editor .ql-table-triangle-up:not(.ql-table-triangle-none)::after {
+    bottom: -19px;
+    border-top-color: var(--color-bg) !important;
+}
+
+.editor .ql-table-triangle-down:not(.ql-table-triangle-none)::before {
+    top: -20px;
+    border-bottom-color: var(--shadow-lg) !important;
+}
+
+.editor .ql-table-triangle-down:not(.ql-table-triangle-none)::after {
+    top: -19px;
+    border-bottom-color: var(--color-bg) !important;
+}
+
+.editor .ql-table-input,
+.editor .ql-table-color-container .label-field-view-color .property-input,
+.editor .ql-table-properties-form .property-input {
+    width: 5rem;
+    height: var(--spacing-8);
+    border: 1px solid var(--color-border);
+    outline: none;
+    padding-left: var(--spacing-2);
+    background: inherit;
+}
+
+.editor .ql-table-input:focus,
+.editor .ql-table-color-container .color-picker .color-picker-select>.erase-container,
+.editor .ql-table-selected,
+.editor .ql-table-properties-form .ql-table-dropdown-selected,
+.editor .ql-table-properties-form .ql-table-color-selected,
+.editor .ql-table-color-container .label-field-view-color .property-input:focus,
+.editor .ql-table-properties-form .property-input:focus {
+    border: 1px solid var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-subtle-bg);
+}
+
+.editor .ql-table-temporary {
+    display: none;
+}
+
+.editor .ql-table-center,
+.editor .ql-table-select-container .ql-table-select-list,
+.editor .ql-table-select-container,
+.editor .ql-table-color-container .color-picker .color-picker-palette .color-picker-wrap .iro-container,
+.editor .ql-table-color-container .color-picker,
+.editor .ql-table-properties-form .properties-form-action-row>button,
+.editor .ql-table-dropdown-list .ql-table-header-row,
+.editor .ql-table-dropdown-properties-list .ql-table-header-row,
+.editor .ql-operate-line-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editor .ql-operate-line-container {
+    position: absolute;
+    z-index: 10;
+}
+
+.editor .ql-operate-line-container .ql-operate-line {
+    background-color: var(--color-primary);
+}
+
+.editor .ql-operate-block {
+    position: absolute;
+    z-index: 10;
+    border: 1px solid var(--color-border-dark);
+    cursor: nwse-resize;
+}
+
+.editor .ql-operate-drag-table {
+    border: 1px dashed var(--color-text-primary);
+    position: absolute;
+}
+
+.editor .ql-table-switch .ql-table-switch-inner[aria-checked="true"] {
+    background: var(--color-primary);
+}
+
+.editor .ql-table-tooltip-error,
+.label-field-view-status {
+    font-size: var(--font-size-xs);
+    color: var(--color-bg);
+    background: var(--color-danger);
+    border-radius: var(--radius-default);
+}
+
+.editor .ql-table-tooltip-error::before,
+.label-field-view-status::before {
+    border-bottom-color: var(--color-danger) !important;
+}
+
+.editor .label-field-view-error>input {
+    border-color: var(--color-danger) !important;
+    animation: ql-table-input-shake .3s ease both;
+}
+
+.editor .ql-table-properties-form {
+    background: var(--color-bg);
+    box-shadow: var(--shadow-lg);
+}
+
+.editor .ql-table-properties-form .properties-form-action-row>button:hover {
+    background: var(--color-bg-secondary);
+}
+
+.editor .ql-table-disabled {
+    background: var(--color-bg-secondary);
+    pointer-events: none;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] .editor .ql-toolbar,
+[data-theme="dark"] .editor .ql-bubble .ql-toolbar {
+    background: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .editor .ql-toolbar .ql-stroke,
+[data-theme="dark"] .editor .ql-bubble .ql-stroke {
+    stroke: var(--color-text-primary);
+}
+
+[data-theme="dark"] .editor .ql-toolbar .ql-fill,
+[data-theme="dark"] .editor .ql-bubble .ql-fill {
+    fill: var(--color-text-primary);
+}
+
+[data-theme="dark"] .editor .ql-table-better,
+[data-theme="dark"] .editor .ql-table-better .ql-table-menu {
+    background-color: var(--color-bg);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .editor .ql-tooltip {
+    background-color: var(--color-bg);
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .editor .ql-better-table td,
+[data-theme="dark"] .editor .ql-better-table th {
+    border-color: var(--color-border);
+}
+
+[data-theme="dark"] .editor .ql-better-table th {
+    background: var(--color-bg-secondary);
+}
+
+/* ----------------------------------------------------------------
+ * Quill runtime chrome — the classes Quill's runtime attaches
+ * after dropping quill.snow.css. Kept lean: only what users see.
+ * ---------------------------------------------------------------- */
+
+/* Editor container layout — Quill's root gets .ql-container + 
+   at runtime. We use our own padding; ensure nothing renders an
+   unwanted border or scrollbar. */
+.editor.ql-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* The editable inner surface that Quill creates. */
+.editor .ql-editor {
+    outline: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    tab-size: 4;
+    line-height: var(--line-height-default);
+    color: inherit;
+}
+
+/* Read-only state — Quill adds .ql-disabled to the container. */
+.editor.ql-container.ql-disabled .ql-editor {
+    cursor: not-allowed;
+}
+
+.editor.ql-container.ql-disabled .ql-tooltip {
+    visibility: hidden;
+}
+
+/* Placeholder shown when the editor is empty (Quill adds .ql-blank). */
+.editor .ql-editor.ql-blank::before {
+    content: attr(data-placeholder);
+    color: var(--color-text-muted);
+    pointer-events: none;
+    position: absolute;
+    font-style: normal;
+    font-weight: normal;
+}
+
+/* Clipboard — invisible helper Quill uses during paste operations. */
+.editor .ql-clipboard {
+    position: absolute;
+    left: -100000px;
+    top: 50%;
+    height: 1px;
+    overflow-y: hidden;
+    pointer-events: none;
+}
+
+/* Legacy glyph hooks — empty strokes/fills so any straggler Quill
+   content gets currentColor from our body. */
+.editor .ql-editor .ql-stroke {
+    stroke: currentColor;
+}
+
+.editor .ql-editor .ql-fill {
+    fill: currentColor;
+}
+
+/* Drop indicator Quill uses during drag-and-drop. */
+.editor .ql-editor .ql-clipboard {
+    user-select: none;
+}
+
+/* Code block container — Quill wraps each code block in an
+   <ol class="ql-code-block-container">. Top + bottom 1px borders
+   (no left/right), small left padding inside, vertical margin so the
+   block separates from surrounding content. Mirrors the design
+   language used by blockquote/heading. */
+.editor .ql-editor .ql-code-block-container {
+    border: 1px solid var(--color-border);
+    border-left: none;
+    border-right: none;
+    padding-left: var(--spacing-2);
+    margin: var(--spacing-3) 0;
+}
+
+/* Quill toggles the `ql-hidden` class on its tooltip (link-editor
+   popover) to hide it between interactions. The visible/hidden CSS
+   effect lived in quill.snow.css which we dropped, so the tooltip
+   stays visible after every interaction. Scoped to .editor so it
+   doesn't accidentally hide other `ql-hidden` elements on the page. */
+.editor .ql-hidden {
+    display: none;
+}
+
+/* Label content for the link tooltip — replicates Quill's stock
+   tooltip.styl. CSS-side labels are used as fallback / initial
+   state; Quill's JS may also overwrite via textContent when the
+   tooltip is in editing mode (e.g. `a.ql-action` → "Save"). */
+.editor .ql-tooltip::before {
+    content: "Visit URL:";
+    line-height: 26px;
+    margin-right: var(--spacing-2);
+}
+
+.editor .ql-tooltip a {
+    line-height: 26px;
+}
+
+.editor .ql-tooltip a.ql-preview {
+    display: inline-block;
+    max-width: 200px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    vertical-align: top;
+}
+
+.editor .ql-tooltip a.ql-action::after {
+    content: "Edit";
+    border-right: 1px solid var(--color-border);
+    margin-left: var(--spacing-4);
+    padding-right: var(--spacing-2);
+}
+
+.editor .ql-tooltip a.ql-remove::before {
+    content: "Remove";
+    margin-left: var(--spacing-2);
+}
+
+.editor .ql-tooltip.ql-editing a.ql-action::after {
+    content: "Save";
+    border-right: 0;
+    padding-right: 0;
+}
+
+.editor .ql-tooltip[data-mode="link"]::before {
+    content: "Enter link:";
+}
+
+.editor .ql-tooltip.ql-editing::before {
+    display: none;
+}
+
+/* Visibility toggles — match Quill's tooltip.styl exactly. The URL
+   input is hidden while the tooltip shows the preview; clicking
+   into edit mode (or starting a new link) reveals it. The preview
+   link and Remove button disappear during editing so the user has
+   a clean input + Save button. */
+.editor .ql-tooltip.ql-editing input[type="text"] {
+    display: inline-block;
+}
+
+.editor .ql-tooltip.ql-editing a.ql-preview,
+.editor .ql-tooltip.ql-editing a.ql-remove {
+    display: none;
+}
+
+/* ----------------------------------------------------------------
+ * File attachment links — paperclip icon + filename, set by
+ * editor.js's setFileUploadHandler flow. The class is applied via
+ * Quill's link format (`format("link", url, { class: ... })`).
+ *
+ * The icon is drawn by a CSS mask so it inherits `currentColor`
+ * (so dark-mode swaps automatically) and renders crisply at any
+ * font-size — the surrounding text scales the `em`-sized box.
+ * ---------------------------------------------------------------- */
+.editor .ql-editor a.keralam-file-link {
+    text-decoration: none;
+    color: var(--color-primary);
+}
+.editor .ql-editor a.keralam-file-link:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+.editor .ql-editor a.keralam-file-link::before {
+    content: "";
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    margin-right: 0.25em;
+    vertical-align: -0.15em;
+    background-color: currentColor;
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 7l-6.5 6.5a1.5 1.5 0 0 0 3 3l6.5 -6.5a3 3 0 0 0 -6 -6l-6.5 6.5a4.5 4.5 0 0 0 9 9l6.5 -6.5'/%3E%3C/svg%3E");
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    mask-size: contain;
+}

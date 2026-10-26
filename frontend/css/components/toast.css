@@ -1,0 +1,186 @@
+/* Toast Component Styles */
+/*
+ * Toast notifications for displaying brief, temporary messages.
+ *
+ * Usage:
+ *   - Use toast_container once per position in your layout
+ *   - Trigger toasts via JS: showToast(message, type, title, position)
+ *     or an element with data-toast-message
+ *   - Types: info, success, warning, danger
+ *   - Positions: top-left, top-center, top-right, bottom-left, bottom-center, bottom-right
+ *
+ * Accessibility:
+ *   - The container is the only live region (polite); toasts carry no aria-live
+ *   - Warning and danger toasts also have role="alert" and stay until closed
+ *   - Respects prefers-reduced-motion
+ */
+
+.toast-container {
+    position: fixed;
+    z-index: var(--z-popover);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-4);
+
+    pointer-events: none;
+    /* Allow clicks through empty container */
+}
+
+/* Positions */
+.toast-container--bottom-right {
+    bottom: var(--spacing-6);
+    inset-inline-end: var(--spacing-6);
+}
+
+.toast-container--bottom-left {
+    bottom: var(--spacing-6);
+    inset-inline-start: var(--spacing-6);
+}
+
+.toast-container--bottom-center {
+    bottom: var(--spacing-6);
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+}
+
+.toast-container--top-right {
+    top: var(--spacing-6);
+    inset-inline-end: var(--spacing-6);
+}
+
+.toast-container--top-left {
+    top: var(--spacing-6);
+    inset-inline-start: var(--spacing-6);
+}
+
+.toast-container--top-center {
+    top: var(--spacing-6);
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+}
+
+.toast {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-default);
+    padding: var(--spacing-default);
+    min-width: min(300px, calc(100vw - var(--spacing-12)));
+    max-width: min(400px, calc(100vw - var(--spacing-12)));
+
+    background-color: var(--color-bg-secondary);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-lg);
+
+    pointer-events: auto;
+    /* Re-enable clicks on toasts */
+
+    transition: all var(--transition-base) cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: center;
+
+    /* Animation hooks */
+    animation: toast-slide-in var(--transition-base) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    .toast {
+        animation: none;
+        transition: opacity var(--transition-fast);
+    }
+}
+
+@keyframes toast-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.toast__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-px);
+}
+
+.toast__title {
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-default);
+    color: var(--color-text);
+}
+
+.toast__message {
+    font-size: var(--font-size-default);
+    color: var(--color-text-muted);
+}
+
+.toast__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: var(--spacing-px);
+}
+
+.toast__close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    padding: var(--spacing-px);
+    border-radius: var(--radius-sm);
+    margin-top: var(--spacing-px);
+
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.toast__close:focus-visible {
+    outline: var(--border-width-default) solid var(--color-primary);
+    outline-offset: var(--border-width-default);
+}
+
+.toast__close:hover {
+    color: var(--color-text);
+    background-color: var(--color-bg-tertiary);
+}
+
+/* Variants: the icon takes the colour, and the start edge carries it too. */
+
+.toast--info {
+    --toast-accent: var(--color-primary);
+}
+
+.toast--success {
+    --toast-accent: var(--color-success);
+}
+
+.toast--warning {
+    --toast-accent: var(--color-warning);
+}
+
+.toast--danger {
+    --toast-accent: var(--color-danger);
+}
+
+.toast--info,
+.toast--success,
+.toast--warning,
+.toast--danger {
+    border-inline-start: var(--border-width-thick) solid var(--toast-accent);
+}
+
+.toast--info .toast__icon,
+.toast--success .toast__icon,
+.toast--warning .toast__icon,
+.toast--danger .toast__icon {
+    color: var(--toast-accent);
+}

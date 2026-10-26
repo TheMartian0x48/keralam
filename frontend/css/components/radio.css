@@ -1,0 +1,150 @@
+/* Radio Component Styles
+ * A custom-styled radio button with support for checked, disabled, and error states.
+ * Uses a hidden native input for accessibility with a visual control overlay.
+ * The control is always a circle, so there is no radius modifier.
+ *
+ * Sizes:      .radio--sm|md|lg set --radio-size, which the circle and the dot read.
+ * Groups:     .radio-group is a <fieldset> of radios, in a column or a row.
+ */
+
+.radio {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+    position: relative;
+    cursor: pointer;
+    font-family: var(--font-primary);
+}
+
+.radio--disabled {
+    cursor: not-allowed;
+    opacity: var(--opacity-disabled);
+}
+
+/* Size Variants: the circle and the dot are sized from --radio-size, the label from font-size. */
+.radio--sm {
+    --radio-size: var(--spacing-4);
+    font-size: var(--font-size-xs);
+}
+
+.radio--md {
+    --radio-size: var(--spacing-5);
+    font-size: var(--font-size-default);
+}
+
+.radio--lg {
+    --radio-size: var(--spacing-6);
+    font-size: var(--font-size-base);
+}
+
+/* Visually hide native input */
+.radio__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Custom radio outer circle */
+.radio__control {
+    flex-shrink: 0;
+    width: var(--radio-size);
+    height: var(--radio-size);
+    border-width: var(--border-width-default);
+    border-style: solid;
+    border-color: var(--color-border);
+    border-radius: var(--radius-full);
+    background-color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    margin-top: var(--spacing-px);
+}
+
+/* Custom radio inner filled circle (hidden by default via transform scaling) */
+.radio__circle {
+    display: block;
+    width: calc(var(--radio-size) * 0.4);
+    height: calc(var(--radio-size) * 0.4);
+    border-radius: var(--radius-full);
+    background-color: var(--color-text-inverse);
+    transform: scale(0);
+    transition: transform var(--transition-fast);
+}
+
+/* Checked state */
+.radio__input:checked+.radio__control {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.radio__input:checked+.radio__control .radio__circle {
+    transform: scale(1);
+}
+
+/* Focus State */
+.radio__input:focus-visible+.radio__control {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+    border-color: var(--color-primary);
+}
+
+/* Error State */
+.radio--error .radio__control {
+    border-color: var(--color-danger);
+}
+
+.radio--error .radio__input:focus-visible+.radio__control {
+    box-shadow: var(--focus-ring-danger);
+}
+
+/* Label styling */
+.radio__label {
+    font-size: inherit;
+    color: var(--color-text-primary);
+    line-height: var(--line-height-relaxed);
+}
+
+.radio--disabled .radio__label {
+    color: var(--color-text-muted);
+}
+
+/* Group: a <fieldset> with a <legend>, which is what gives the group an accessible name.
+ * The browser's default fieldset border, padding and legend placement are reset here. */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    font-family: var(--font-primary);
+}
+
+.radio-group--row {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-2) var(--spacing-6);
+}
+
+.radio-group__legend {
+    float: left;
+    width: 100%;
+    margin-bottom: var(--spacing-2);
+    padding: 0;
+    font-size: var(--font-size-default);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+}
+
+.radio-group__legend + * {
+    clear: left;
+}
+
+.radio-group--disabled {
+    cursor: not-allowed;
+}

@@ -1,0 +1,55 @@
+/* Select Component Styles
+ * A dropdown choice on the native <select>, so the browser keeps its picker, its mobile
+ * wheel and its keyboard handling. It is an input: the select carries the .input classes
+ * (size, radius, error, disabled), and this file adds only what a select needs on top.
+ *
+ * Structure:
+ *   div.select-container
+ *     select.input.input--md.select
+ *       option / optgroup > option
+ *     span.select__indicator       - the caret, drawn from the icon font
+ *
+ * The caret is a separate element, not a background image, so it takes its colour from the
+ * theme and follows the disabled and error states.
+ */
+
+.select-container {
+    position: relative;
+    width: 100%;
+}
+
+/* Room on the end for the caret. Compound selector: it must beat the size modifier's
+ * padding, which sets all four sides. */
+select.select {
+    padding-inline-end: var(--spacing-8);
+    cursor: pointer;
+    text-overflow: ellipsis;
+}
+
+/* The placeholder: while the empty option is the selected one, the text is muted. */
+select.select:has(option[value=""]:checked) {
+    color: var(--color-text-muted);
+}
+
+.select__indicator {
+    position: absolute;
+    top: 50%;
+    inset-inline-end: var(--spacing-3);
+    display: flex;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+}
+
+.select-container:has(.input--error) .select__indicator {
+    color: var(--color-danger);
+}
+
+.select-container:has(select:disabled) .select__indicator {
+    color: var(--color-text-disabled);
+    opacity: var(--opacity-muted);
+}
+
+select.select:disabled {
+    cursor: not-allowed;
+}

@@ -1,0 +1,119 @@
+/* Autocomplete Component Styles */
+
+.autocomplete {
+    position: relative;
+    width: 100%;
+    font-family: var(--font-primary);
+}
+
+.autocomplete__control {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.autocomplete__input {
+    width: 100%;
+    height: 2.5rem;
+    /* Match standard inputs */
+    padding: var(--spacing-2) var(--spacing-8) var(--spacing-2) var(--spacing-3);
+    /* Extra right padding for icon */
+    background-color: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    font-family: inherit;
+    font-size: var(--font-size-default);
+    color: var(--color-text-primary);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.autocomplete__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring-primary);
+}
+
+.autocomplete__input--error {
+    border-color: var(--color-danger);
+}
+
+.autocomplete__input--error:focus {
+    box-shadow: var(--focus-ring-danger);
+}
+
+.autocomplete__input:disabled,
+.autocomplete--disabled .autocomplete__input {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+}
+
+/* Control Chevron */
+.autocomplete__indicator {
+    position: absolute;
+    right: var(--spacing-3);
+    color: var(--color-text-muted);
+    pointer-events: none;
+    /* Let clicks pass through to input */
+    display: flex;
+    align-items: center;
+}
+
+/* Dropdown Menu */
+.autocomplete__menu {
+    position: absolute;
+    top: calc(100% + var(--spacing-1));
+    left: 0;
+    width: 100%;
+    max-height: 250px;
+    overflow-y: auto;
+    background-color: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-default);
+    z-index: var(--z-dropdown);
+    /* Above other content */
+    margin: 0;
+    padding: var(--spacing-1);
+    list-style: none;
+}
+
+.autocomplete__item {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-default);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    display: block;
+    /* Support empty span text */
+}
+
+/* Hover & Keyboard Highlight state */
+.autocomplete__item:hover,
+.autocomplete__item--highlighted {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+.autocomplete__item--empty {
+    padding: var(--spacing-3);
+    color: var(--color-text-muted);
+    text-align: center;
+    cursor: default;
+    background-color: transparent !important;
+}
+
+/* Custom Scrollbar */
+.autocomplete__menu::-webkit-scrollbar {
+    width: 6px;
+}
+
+.autocomplete__menu::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.autocomplete__menu::-webkit-scrollbar-thumb {
+    background-color: var(--color-border);
+    border-radius: 10px;
+}

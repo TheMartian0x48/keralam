@@ -1,0 +1,232 @@
+/* CSS Custom Properties - Design Tokens
+ *
+ * Structure:
+ *   1. STATIC TOKENS - Never change between themes (spacing, typography, etc.)
+ *   2. THEME COLORS - every colour once, as light-dark(light, dark)
+ *   3. WHICH SCHEME APPLIES - the OS preference, or data-theme="light|dark"
+ *
+ * Named themes (gruvbox, nord, ...) live in css/themes/ and are bundled separately into
+ * assets/keralam-themes.css: link it and set data-theme="gruvbox-dark" to use one.
+ */
+
+:root {
+    /* ========================================================
+       STATIC TOKENS (Never change between themes)
+       ======================================================== */
+
+    /* Spacing Scale (Tailwind-like) */
+    --spacing-0: 0px;
+    --spacing-px: 1px;
+    --spacing-1: 0.25rem;
+    /* 4px */
+    --spacing-2: 0.5rem;
+    /* 8px */
+    --spacing-3: 0.75rem;
+    /* 12px */
+    --spacing-4: 1rem;
+    /* 16px */
+    --spacing-5: 1.25rem;
+    /* 20px */
+    --spacing-6: 1.5rem;
+    /* 24px */
+    --spacing-8: 2rem;
+    /* 32px */
+    --spacing-10: 2.5rem;
+    /* 40px */
+    --spacing-12: 3rem;
+    /* 48px */
+    --spacing-16: 4rem;
+    /* 64px */
+    --spacing-20: 5rem;
+    /* 80px */
+    --spacing-24: 6rem;
+    /* 96px */
+    --spacing-32: 8rem;
+    /* 128px */
+
+    /* Spacing - Default */
+    --spacing-default: var(--spacing-4);
+
+    /* Typography - Font Families */
+    --font-primary: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        "Helvetica Neue", Arial, sans-serif;
+    --font-family-mono: "SF Mono", Monaco, "Cascadia Code", "Roboto Mono",
+        Consolas, "Courier New", monospace;
+
+    /* Typography - Font Sizes */
+    --font-size-xs: 0.75rem;
+    /* 12px */
+    --font-size-sm: 0.875rem;
+    /* 14px */
+    --font-size-base: 1rem;
+    /* 16px */
+    --font-size-lg: 1.125rem;
+    /* 18px */
+    --font-size-xl: 1.25rem;
+    /* 20px */
+    --font-size-2xl: 1.5rem;
+    /* 24px */
+    --font-size-3xl: 1.875rem;
+    /* 30px */
+    --font-size-4xl: 2.25rem;
+    /* 36px */
+
+    /* Typography - Default */
+    --font-size-default: var(--font-size-sm);
+
+    /* Typography - Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
+
+    /* Typography - Default */
+    --font-weight-default: var(--font-weight-medium);
+
+    /* Typography - Line Heights */
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.5;
+    --line-height-relaxed: 1.75;
+
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    /* 4px */
+    --radius-md: 0.5rem;
+    /* 8px */
+    --radius-lg: 1rem;
+    /* 16px */
+    --radius-xl: 1.5rem;
+    /* 24px */
+    --radius-full: 9999px;
+
+    /* Border Radius - Default */
+    --radius-default: var(--radius-md);
+
+    /* Border Widths */
+    --border-width-thin: 1px;
+    --border-width-medium: 2px;
+    --border-width-thick: 4px;
+
+    /* Border Width - Default */
+    --border-width-default: var(--border-width-thin);
+
+    /* Z-Index Scale */
+    --z-base: 0;
+    --z-dropdown: 1000;
+    --z-sticky: 1100;
+    --z-fixed: 1200;
+    --z-modal-backdrop: 1300;
+    --z-modal: 1400;
+    --z-popover: 1500;
+    --z-tooltip: 1600;
+
+    /* Transitions */
+    --transition-fast: 150ms ease-in-out;
+    --transition-base: 250ms ease-in-out;
+    --transition-slow: 350ms ease-in-out;
+
+    /* Easing Functions */
+    --ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Opacity */
+    --opacity-disabled: 0.5;
+    --opacity-muted: 0.6;
+    --opacity-subtle: 0.8;
+
+    /* ========================================================
+       THEME COLORS
+       Each colour is written once as light-dark(light value, dark value). Which one
+       applies is the element's color-scheme: the OS preference by default, or
+       forced by data-theme. A named theme (frontend/css/themes/) overrides tokens.
+       ======================================================== */
+
+    /* Primary Colors */
+    --color-primary: light-dark(#2563eb, #3b82f6);
+    --color-primary-dark: light-dark(#1d4ed8, #2563eb);
+    --color-primary-darker: light-dark(#1e40af, #1d4ed8);
+    --color-primary-light: light-dark(#3b82f6, #60a5fa);
+    --color-primary-subtle-bg: light-dark(#eff6ff, #1e3a5f);
+    --color-primary-subtle-text: light-dark(#1e40af, #93c5fd);
+
+    /* Secondary Colors */
+    --color-secondary: light-dark(#10b981, #34d399);
+    --color-secondary-dark: light-dark(#059669, #10b981);
+    --color-secondary-light: light-dark(#34d399, #6ee7b7);
+
+    /* Semantic - Success */
+    --color-success: light-dark(#10b981, #34d399);
+    --color-success-subtle-bg: light-dark(#f0fdf4, #064e3b);
+    --color-success-subtle-text: light-dark(#166534, #6ee7b7);
+
+    /* Semantic - Warning */
+    --color-warning: light-dark(#f59e0b, #fbbf24);
+    --color-warning-text: light-dark(#92400e, #fcd34d);
+    --color-warning-subtle-bg: light-dark(#fffbeb, #78350f);
+
+    /* Semantic - Danger */
+    --color-danger: light-dark(#ef4444, #f87171);
+    --color-danger-dark: light-dark(#dc2626, #ef4444);
+    --color-danger-darker: light-dark(#b91c1c, #dc2626);
+    --color-danger-subtle-bg: light-dark(#fef2f2, #7f1d1d);
+    --color-danger-subtle-text: light-dark(#991b1b, #fca5a5);
+
+    /* Semantic - Info */
+    --color-info: light-dark(#3b82f6, #60a5fa);
+    --color-info-subtle-bg: light-dark(#f0f9ff, #1e3a5f);
+    --color-info-subtle-text: light-dark(#075985, #93c5fd);
+
+    /* Text Colors */
+    --color-text: light-dark(#1f2937, #f9fafb);
+    --color-text-primary: light-dark(#1f2937, #f9fafb);
+    --color-text-secondary: light-dark(#4b5563, #d1d5db);
+    --color-text-muted: light-dark(#6b7280, #9ca3af);
+    --color-text-disabled: light-dark(#9ca3af, #6b7280);
+    --color-text-inverse: light-dark(#ffffff, #111827);
+
+    /* Background Colors */
+    --color-bg: light-dark(#ffffff, #101010);
+    --color-bg-primary: light-dark(#ffffff, #101010);
+    --color-bg-secondary: light-dark(#f9fafb, #1a1a1a);
+    --color-bg-tertiary: light-dark(#f3f4f6, #2a2a2a);
+    --color-bg-overlay: light-dark(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.75));
+
+    /* Border Colors */
+    --color-border: light-dark(#e5e7eb, #374151);
+    --color-border-dark: light-dark(#d1d5db, #4b5563);
+    --color-border-light: light-dark(#f3f4f6, #1f2937);
+
+    /* Shadows */
+    --shadow-xs: 0 1px 2px 0 light-dark(rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.3));
+    --shadow-sm: 0 1px 3px 0 light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), 0 1px 2px -1px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+    --shadow-md: 0 4px 6px -1px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), 0 2px 4px -2px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+    --shadow-lg: 0 10px 15px -3px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), 0 4px 6px -4px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+    --shadow-xl: 0 20px 25px -5px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4)), 0 8px 10px -6px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4));
+
+    /* Shadow - Default */
+    --shadow-default: var(--shadow-md);
+
+    /* Focus Rings */
+    --focus-ring-primary: 0 0 0 1px light-dark(rgba(37, 99, 235, 0.3), transparent), 0 0 0 3px light-dark(transparent, rgba(59, 130, 246, 0.5));
+    --focus-ring-danger: 0 0 0 1px light-dark(rgba(239, 68, 68, 0.3), transparent), 0 0 0 3px light-dark(transparent, rgba(248, 113, 113, 0.5));
+}
+/* ========================================================
+   WHICH SCHEME APPLIES
+   color-scheme also tells the browser to draw form controls, scrollbars and the
+   page canvas to match.
+   ======================================================== */
+
+:root {
+    color-scheme: light dark;
+}
+
+[data-theme="light"] {
+    color-scheme: light;
+}
+
+[data-theme="dark"] {
+    color-scheme: dark;
+}

@@ -1,0 +1,167 @@
+/* Table Component Styles
+ * A data table in a bordered, scrollable container.
+ *
+ * Structure:
+ *   .table-container
+ *     .table-scroll                 focusable and labelled when it can scroll
+ *       table.table
+ *         caption.table__caption
+ *         thead > tr > th.table__heading
+ *         tbody > tr.table__row > th.table__row-heading | td.table__cell
+ *
+ * Modifiers:
+ *   --sm/--md/--lg    - Size: each owns the cell padding and text size
+ *   --striped/--hover - Row backgrounds
+ *   __cell--center/--end - Text alignment of a cell or a heading
+ */
+
+.table--sm {
+    --table-cell-padding: var(--spacing-2) var(--spacing-3);
+    --table-font-size: var(--font-size-xs);
+}
+
+.table--md {
+    --table-cell-padding: var(--spacing-default);
+    --table-font-size: var(--font-size-default);
+}
+
+.table--lg {
+    --table-cell-padding: var(--spacing-5) var(--spacing-6);
+    --table-font-size: var(--font-size-lg);
+}
+
+.table-container {
+    width: 100%;
+    /* Owns the border + radius; clips the inner scroll element (and its
+     * scrollbar) to the rounded corners so the scrollbar never covers them. */
+    overflow: hidden;
+    border-radius: var(--radius-default);
+    border: var(--border-width-default) solid var(--color-border);
+    background-color: var(--color-bg);
+}
+
+/* Inner scroll element — owns all scrolling so the rounded border stays intact. */
+.table-scroll {
+    overflow-x: auto;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: start;
+    font-size: var(--table-font-size);
+    color: var(--color-text);
+}
+
+/* Caption for accessibility */
+.table__caption {
+    padding: var(--spacing-3);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-default);
+    color: var(--color-text-secondary);
+    text-align: start;
+    caption-side: top;
+}
+
+.table thead {
+    background-color: var(--color-bg-secondary);
+    border-bottom: var(--border-width-default) solid var(--color-border);
+}
+
+/* Vertical scroll — fixed-height scroll region with a scrollable body.
+ * --table-max-height is supplied inline per table (see table.wire). */
+.table-scroll--vertical {
+    max-height: var(--table-max-height, 24rem);
+    overflow-y: auto;
+}
+
+/* Sticky header — pins <thead> while the scroll region scrolls vertically.
+ * thead already has a background, so it covers the scrolling rows. */
+.table-scroll--sticky-header thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--color-bg-secondary);
+}
+
+.table th {
+    padding: var(--table-cell-padding);
+    text-align: start;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    font-size: var(--font-size-xs);
+    letter-spacing: 0.05em;
+}
+
+.table td {
+    padding: var(--table-cell-padding);
+    border-bottom: var(--border-width-default) solid var(--color-border-light);
+    vertical-align: middle;
+}
+
+.table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Striped variant */
+.table--striped tbody tr:nth-child(even) {
+    background-color: var(--color-bg-secondary);
+}
+
+/* Hover variant */
+.table--hover tbody tr:hover {
+    background-color: var(--color-bg-secondary);
+}
+
+/* A row header reads as data, not as a column heading. */
+.table th.table__row-heading {
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: inherit;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    border-bottom: var(--border-width-default) solid var(--color-border-light);
+}
+
+.table tr:last-child th.table__row-heading {
+    border-bottom: none;
+}
+
+/* Alignment: numbers line up on the end edge. */
+.table th.table__heading--center,
+.table th.table__row-heading--center,
+.table td.table__cell--center {
+    text-align: center;
+}
+
+.table th.table__heading--end,
+.table th.table__row-heading--end,
+.table td.table__cell--end {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+}
+
+.table__empty-cell {
+    text-align: center;
+    color: var(--color-text-muted);
+}
+
+/* The scroll region takes focus so a keyboard can scroll it. */
+.table-scroll:focus-visible {
+    outline: var(--border-width-default) solid var(--color-primary);
+    outline-offset: calc(-1 * var(--border-width-default));
+}
+
+/* Utility for cell content with icons */
+.table-cell-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+}
+
+.table-cell-secondary {
+    display: block;
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}

@@ -1,0 +1,238 @@
+/* Dropzone Component Styles
+ *
+ * A drag-and-drop file area. The control is an <input type=file> behind the whole area
+ * (so a click works without script); keralam-dropzone adds drops, pastes and the file list.
+ *
+ * Structure:
+ *   .dropzone
+ *     .dropzone__area
+ *       input.dropzone__input          visually hidden
+ *       label.dropzone__label
+ *         span.dropzone__content       icon, text, help (inline content only: it is in a label)
+ *         span.dropzone__preview       shown once files are chosen
+ *     ul.dropzone__file-list
+ *     .dropzone__rejections            files refused, role=alert
+ *     .dropzone__error                 the validation message, role=alert
+ *
+ * Modifiers:
+ *   --sm/--md/--lg             - Size: each owns the area's minimum height
+ *   --rounded/--pilled/--square - Radius
+ *   --error/--disabled         - State
+ *
+ * The drag highlight is the [data-dragging] attribute keralam-dropzone sets.
+ */
+
+.dropzone--sm {
+    --dropzone-min-height: 8rem;
+}
+
+.dropzone--md {
+    --dropzone-min-height: 12rem;
+}
+
+.dropzone--lg {
+    --dropzone-min-height: 16rem;
+}
+
+.dropzone {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    width: 100%;
+}
+
+.dropzone__area {
+    position: relative;
+    display: flex;
+    min-height: var(--dropzone-min-height);
+    border: var(--border-width-default) dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    background-color: var(--color-bg-secondary);
+    transition: background-color var(--transition-base), border-color var(--transition-base);
+    overflow: hidden;
+}
+
+.dropzone--rounded .dropzone__area {
+    border-radius: var(--radius-xl);
+}
+
+.dropzone--pilled .dropzone__area {
+    border-radius: var(--radius-full);
+}
+
+.dropzone--square .dropzone__area {
+    border-radius: 0;
+}
+
+.dropzone:not(.dropzone--disabled) .dropzone__area:hover {
+    background-color: var(--color-bg);
+    border-color: var(--color-primary);
+}
+
+.dropzone[data-dragging] .dropzone__area {
+    background-color: var(--color-primary-subtle-bg);
+    border-color: var(--color-primary);
+    border-style: solid;
+}
+
+.dropzone--error .dropzone__area {
+    border-color: var(--color-danger);
+    background-color: var(--color-danger-subtle-bg);
+}
+
+.dropzone--disabled .dropzone__area {
+    opacity: var(--opacity-muted);
+    cursor: not-allowed;
+}
+
+.dropzone__label {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0; /* .label adds a bottom margin that would push the content off centre */
+    padding: var(--spacing-6);
+    cursor: pointer;
+}
+
+.dropzone--disabled .dropzone__label {
+    cursor: not-allowed;
+}
+
+.dropzone__content,
+.dropzone__preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: var(--spacing-2);
+}
+
+.dropzone__content[hidden],
+.dropzone__preview[hidden] {
+    display: none;
+}
+
+.dropzone__icon-wrapper {
+    display: flex;
+    color: var(--color-text-muted);
+}
+
+.dropzone:not(.dropzone--disabled) .dropzone__area:hover .dropzone__icon-wrapper,
+.dropzone[data-dragging] .dropzone__icon-wrapper {
+    color: var(--color-primary);
+}
+
+.dropzone__text {
+    font-size: var(--font-size-default);
+    color: var(--color-text-primary);
+}
+
+.dropzone__help {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+/* File list */
+.dropzone__file-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dropzone__file-list:empty {
+    display: none;
+}
+
+.dropzone__file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--spacing-2) var(--spacing-3);
+    background-color: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    font-size: var(--font-size-sm);
+    gap: var(--spacing-3);
+}
+
+.dropzone__file-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.dropzone__file-name {
+    width: 100%;
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.dropzone__file-size {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+}
+
+.dropzone__file-remove {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-1);
+    background: none;
+    border: none;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.dropzone__file-remove:hover {
+    color: var(--color-danger);
+    background-color: var(--color-danger-subtle-bg);
+}
+
+.dropzone__file-remove:focus-visible {
+    outline: var(--border-width-default) solid var(--color-danger);
+    outline-offset: 1px;
+}
+
+/* Messages */
+.dropzone__rejections:empty {
+    display: none;
+}
+
+.dropzone__rejections,
+.dropzone__error {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    font-size: var(--font-size-sm);
+    color: var(--color-danger);
+}
+
+.dropzone__rejections {
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+/* Keyboard focus lands on the hidden input; show it on the area. */
+.dropzone__input:focus-visible + .dropzone__label {
+    outline: var(--border-width-default) solid var(--color-primary);
+    outline-offset: calc(-1 * var(--spacing-1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dropzone__area,
+    .dropzone__file-remove {
+        transition: none;
+    }
+}

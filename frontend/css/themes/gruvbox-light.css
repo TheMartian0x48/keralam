@@ -1,0 +1,51 @@
+/* gruvbox-light theme. Use: <html data-theme="gruvbox-light"> with keralam-themes.css linked after keralam.css.
+ * color-scheme makes form controls, scrollbars and the canvas match. */
+
+:root[data-theme="gruvbox-light"] {
+    color-scheme: light;
+
+    --color-primary: #076678;
+    --color-primary-dark: #065260;
+    --color-primary-darker: #05424e;
+    --color-primary-light: #145a68;
+    --color-primary-subtle-bg: #dbdfbd;
+    --color-primary-subtle-text: #1f515a;
+    --color-secondary: #3b6f4f;
+    --color-secondary-dark: #2f593f;
+    --color-secondary-light: #3b6149;
+    --color-success: #6d680d;
+    --color-success-subtle-bg: #e9dfaf;
+    --color-success-subtle-text: #57521f;
+    --color-info: #076678;
+    --color-info-subtle-bg: #dbdfbd;
+    --color-info-subtle-text: #1f515a;
+    --color-warning: #8c5b10;
+    --color-warning-text: #684b21;
+    --color-warning-subtle-bg: #eddeaf;
+    --color-danger: #9d0006;
+    --color-danger-dark: #7e0005;
+    --color-danger-darker: #660004;
+    --color-danger-subtle-bg: #efd2ae;
+    --color-danger-subtle-text: #71191c;
+    --color-text: #3c3836;
+    --color-text-primary: #3c3836;
+    --color-text-secondary: #504945;
+    --color-text-muted: #665c54;
+    --color-text-disabled: #a89984;
+    --color-text-inverse: #fffdf5;
+    --color-bg: #fbf1c7;
+    --color-bg-primary: #fbf1c7;
+    --color-bg-secondary: #f2e5bc;
+    --color-bg-tertiary: #ebdbb2;
+    --color-bg-overlay: rgba(0, 0, 0, 0.5);
+    --color-border: #d5c4a1;
+    --color-border-dark: #bdae93;
+    --color-border-light: #f2e5bc;
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    --focus-ring-primary: 0 0 0 2px rgba(7, 102, 120, 0.5);
+    --focus-ring-danger: 0 0 0 2px rgba(157, 0, 6, 0.5);
+}

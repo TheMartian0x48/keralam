@@ -1,0 +1,146 @@
+/* Checkbox Component Styles
+ * A custom-styled checkbox with support for checked, indeterminate, disabled, and error states.
+ * The indeterminate dash is drawn from :indeterminate, which the keralam-checkbox controller
+ * sets on the native input, so a click clears it without any extra bookkeeping.
+ * Uses a hidden native input for accessibility with a visual control overlay.
+ */
+
+.checkbox {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+    position: relative;
+    cursor: pointer;
+    font-family: var(--font-primary);
+}
+
+.checkbox--disabled {
+    cursor: not-allowed;
+    opacity: var(--opacity-disabled);
+}
+
+/* Size Variants: the box size drives the icon size, the label size is separate. */
+.checkbox--sm {
+    --checkbox-size: var(--spacing-4);
+    font-size: var(--font-size-xs);
+}
+
+.checkbox--md {
+    --checkbox-size: var(--spacing-5);
+    font-size: var(--font-size-default);
+}
+
+.checkbox--lg {
+    --checkbox-size: var(--spacing-6);
+    font-size: var(--font-size-base);
+}
+
+/* Radius Modifiers (shared Radius enum): they round the box, not the whole row.
+ * Default adds no class and keeps the base radius. */
+.checkbox--rounded .checkbox__control {
+    border-radius: var(--radius-lg);
+}
+
+.checkbox--pilled .checkbox__control {
+    border-radius: var(--radius-full);
+}
+
+.checkbox--square .checkbox__control {
+    border-radius: 0;
+}
+
+/* Visually hide the native input */
+.checkbox__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Custom checkbox box */
+.checkbox__control {
+    flex-shrink: 0;
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+    margin-top: var(--spacing-px);
+}
+
+/* Icons inside the control */
+.checkbox__icon {
+    color: var(--color-text-inverse);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all var(--transition-fast);
+    /* The icon is a font glyph: size it with font-size, as icon--sm does. */
+    width: calc(var(--checkbox-size) * 0.6);
+    height: calc(var(--checkbox-size) * 0.6);
+    font-size: calc(var(--checkbox-size) * 0.6);
+}
+
+.checkbox__icon--indeterminate {
+    display: none;
+}
+
+/* Checked State */
+.checkbox__input:checked+.checkbox__control {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.checkbox__input:checked+.checkbox__control .checkbox__icon--check {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Indeterminate State */
+.checkbox__input:indeterminate+.checkbox__control {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.checkbox__input:indeterminate+.checkbox__control .checkbox__icon--check {
+    display: none;
+}
+
+.checkbox__input:indeterminate+.checkbox__control .checkbox__icon--indeterminate {
+    display: block;
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Focus State */
+.checkbox__input:focus-visible+.checkbox__control {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+    border-color: var(--color-primary);
+}
+
+/* Error State */
+.checkbox--error .checkbox__control {
+    border-color: var(--color-danger);
+}
+
+.checkbox--error .checkbox__input:focus-visible+.checkbox__control {
+    box-shadow: var(--focus-ring-danger);
+}
+
+/* Label styling */
+.checkbox__label {
+    font-size: inherit;
+    color: var(--color-text-primary);
+    line-height: var(--line-height-relaxed);
+    cursor: pointer;
+}
+
+.checkbox--disabled .checkbox__label {
+    cursor: not-allowed;
+}

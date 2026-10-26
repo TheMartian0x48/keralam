@@ -1,0 +1,168 @@
+/* Drawer Component Styles
+ *
+ * A slide-over panel on the native <dialog> element. It opens from any edge of
+ * the screen: right (default), left, top or bottom.
+ *
+ * Structure:
+ *   dialog.drawer                 - Fills the viewport, transparent; its ::backdrop is the overlay
+ *     .drawer__panel              - The sliding panel
+ *       .drawer__header           - Title and close button
+ *       .drawer__description      - Optional description text
+ *       .drawer__body             - Scrollable content area
+ *
+ * The panel is positioned inside the viewport-sized dialog, so a click on the
+ * dialog itself (outside the panel) is a click on the backdrop.
+ *
+ * Modifiers:
+ *   .drawer__panel--right|left|top|bottom   - Edge, size, and the off-screen offset
+ *
+ * Size:
+ *   --drawer-size   Width of a left/right panel, max height of a top/bottom panel.
+ *                   Unset, it falls back to 24rem (left/right) or 50vh (top/bottom).
+ *                   Set it on the dialog or any ancestor: style="--drawer-size: 40rem".
+ *
+ * Animation uses @starting-style and allow-discrete transitions, as dialog.css does.
+ */
+
+dialog.drawer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+    color: var(--color-text);
+
+    /* clip, not hidden: a hidden-overflow box is still a scroll container, and focusing
+     * the close button inside the off-screen panel scrolls it to reveal the button. That
+     * scroll then animates back against the panel's own slide, so right and bottom
+     * drawers jitter. clip cannot be scrolled at all. */
+    overflow: clip;
+
+    /* Keeps the dialog displayed while the panel slides out. */
+    transition: display var(--transition-base) allow-discrete, overlay var(--transition-base) allow-discrete;
+}
+
+/* Backdrop */
+dialog.drawer::backdrop {
+    background-color: var(--color-bg-overlay);
+    backdrop-filter: blur(2px);
+
+    opacity: 0;
+    transition: opacity var(--transition-base), display var(--transition-base) allow-discrete, overlay var(--transition-base) allow-discrete;
+}
+
+dialog.drawer[open]::backdrop {
+    opacity: 1;
+}
+
+@starting-style {
+    dialog.drawer[open]::backdrop {
+        opacity: 0;
+    }
+}
+
+/* Panel. Each position sets --drawer-offset (where the panel rests off-screen);
+ * the base only applies it, and open removes it. */
+.drawer__panel {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-bg);
+    box-shadow: var(--shadow-xl);
+    font-family: var(--font-primary);
+    transform: var(--drawer-offset);
+    transition: transform var(--transition-base);
+}
+
+dialog.drawer[open] .drawer__panel {
+    transform: none;
+}
+
+@starting-style {
+    dialog.drawer[open] .drawer__panel {
+        transform: var(--drawer-offset);
+    }
+}
+
+.drawer__panel--right {
+    --drawer-offset: translateX(100%);
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: var(--drawer-size, 24rem);
+}
+
+.drawer__panel--left {
+    --drawer-offset: translateX(-100%);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: var(--drawer-size, 24rem);
+}
+
+.drawer__panel--top {
+    --drawer-offset: translateY(-100%);
+    top: 0;
+    right: 0;
+    left: 0;
+    max-height: var(--drawer-size, 50vh);
+}
+
+.drawer__panel--bottom {
+    --drawer-offset: translateY(100%);
+    right: 0;
+    bottom: 0;
+    left: 0;
+    max-height: var(--drawer-size, 50vh);
+}
+
+/* Header */
+.drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-default) var(--spacing-6);
+    border-bottom: var(--border-width-default) solid var(--color-border);
+}
+
+.drawer__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-primary);
+    margin: 0;
+}
+
+.drawer__close-wrapper {
+    margin-left: auto;
+}
+
+/* Description */
+.drawer__description {
+    margin: 0;
+    padding: var(--spacing-default) var(--spacing-6) 0;
+    font-size: var(--font-size-default);
+    color: var(--color-text-muted);
+}
+
+/* Body */
+.drawer__body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: var(--spacing-6);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    dialog.drawer,
+    dialog.drawer::backdrop,
+    .drawer__panel {
+        transition: none;
+    }
+}

@@ -1,0 +1,73 @@
+/* FormField Component Styles
+ *
+ * A wrapper that lays a control out with its label, helper text and error message. The
+ * Odin side builds the control, so the label's `for`, the control's id and its
+ * aria-describedby always agree.
+ *
+ * Structure:
+ *   .form-field [.form-field--error]
+ *     label.label.form-field__label   - the label component
+ *     .form-field__control            - the control
+ *     .form-field__help               - helper text, or
+ *     .form-field__error              - the error message (role="alert")
+ *
+ * The control styles itself: when there is an error it is built with error = true and
+ * carries its own error class. This file only colours the label.
+ */
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    margin-bottom: var(--spacing-4);
+    font-family: var(--font-primary);
+}
+
+.form-field__label {
+    margin-bottom: var(--spacing-1);
+    transition: color var(--transition-fast);
+}
+
+/* The label takes the focus colour while its control has focus. Every text-like control
+ * carries .input, so one selector covers input, textarea and select. */
+.form-field:not(.form-field--error):has(.input:focus) .form-field__label {
+    color: var(--color-primary);
+}
+
+.form-field__control {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* A control fills the width it is given. */
+.form-field__control > * {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+/* Helper text */
+.form-field__help {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-top: var(--spacing-1);
+}
+
+/* Error message */
+.form-field__error {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-1);
+    font-size: var(--font-size-xs);
+    color: var(--color-danger);
+    margin-top: var(--spacing-1);
+}
+
+.form-field__error span {
+    font-weight: var(--font-weight-default);
+}
+
+/* State: Error */
+.form-field--error .form-field__label {
+    color: var(--color-danger);
+}

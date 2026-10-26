@@ -1,0 +1,51 @@
+/* dracula theme. Use: <html data-theme="dracula"> with keralam-themes.css linked after keralam.css.
+ * color-scheme makes form controls, scrollbars and the canvas match. */
+
+:root[data-theme="dracula"] {
+    color-scheme: dark;
+
+    --color-primary: #bd93f9;
+    --color-primary-dark: #c49ff8;
+    --color-primary-darker: #caa9f7;
+    --color-primary-light: #ccacf7;
+    --color-primary-subtle-bg: #494161;
+    --color-primary-subtle-text: #d2b6f7;
+    --color-secondary: #8be9fd;
+    --color-secondary-dark: #98ebfc;
+    --color-secondary-light: #a6edfa;
+    --color-success: #50fa7b;
+    --color-success-subtle-bg: #315845;
+    --color-success-subtle-text: #8bf9a5;
+    --color-info: #8be9fd;
+    --color-info-subtle-bg: #3e5462;
+    --color-info-subtle-text: #b1eef9;
+    --color-warning: #f1fa8c;
+    --color-warning-text: #f3f9b0;
+    --color-warning-subtle-bg: #545849;
+    --color-danger: #ff6e6e;
+    --color-danger-dark: #fe7f7e;
+    --color-danger-darker: #fd8c8b;
+    --color-danger-subtle-bg: #573942;
+    --color-danger-subtle-text: #fd9e9c;
+    --color-text: #f8f8f2;
+    --color-text-primary: #f8f8f2;
+    --color-text-secondary: #e0e0da;
+    --color-text-muted: #afb6d3;
+    --color-text-disabled: #6272a4;
+    --color-text-inverse: #282a36;
+    --color-bg: #282a36;
+    --color-bg-primary: #282a36;
+    --color-bg-secondary: #303241;
+    --color-bg-tertiary: #44475a;
+    --color-bg-overlay: rgba(0, 0, 0, 0.75);
+    --color-border: #44475a;
+    --color-border-dark: #6272a4;
+    --color-border-light: #44475a;
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4), 0 4px 6px -4px rgba(0, 0, 0, 0.4);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.4);
+    --focus-ring-primary: 0 0 0 3px rgba(189, 147, 249, 0.5);
+    --focus-ring-danger: 0 0 0 3px rgba(255, 110, 110, 0.5);
+}

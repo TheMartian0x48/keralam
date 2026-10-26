@@ -1,0 +1,138 @@
+/* Tabs Component Styles
+ * A tabbed interface with keyboard navigation support.
+ *
+ * Structure:
+ *   .tabs
+ *     .tabs__list            role=tablist
+ *       button.tabs__trigger role=tab, data-state=active|inactive
+ *     .tabs__content         role=tabpanel, data-state=active|inactive
+ *
+ * Modifiers:
+ *   --sm/--md/--lg  - Size: each owns the trigger's font size and padding
+ *   --vertical      - Triggers in a column at the side
+ */
+
+.tabs--sm {
+    --tabs-font-size: var(--font-size-xs);
+    --tabs-trigger-padding: var(--spacing-1);
+}
+
+.tabs--md {
+    --tabs-font-size: var(--font-size-default);
+    --tabs-trigger-padding: var(--spacing-2);
+}
+
+.tabs--lg {
+    --tabs-font-size: var(--font-size-lg);
+    --tabs-trigger-padding: var(--spacing-3);
+}
+
+.tabs {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.tabs__list {
+    display: flex;
+    align-items: center;
+    border-bottom: var(--border-width-default) solid var(--color-border);
+    gap: var(--spacing-6);
+    margin-bottom: var(--spacing-6);
+}
+
+.tabs__trigger {
+    background: transparent;
+    border: none;
+    padding: var(--tabs-trigger-padding) 0;
+    margin-bottom: calc(-1 * var(--border-width-default));
+
+    font-family: var(--font-primary);
+    font-size: var(--tabs-font-size);
+    font-weight: var(--font-weight-default);
+    color: var(--color-text-muted);
+    cursor: pointer;
+
+    border-bottom: var(--border-width-default) solid transparent;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.tabs__trigger:hover:not(:disabled) {
+    color: var(--color-text);
+}
+
+.tabs__trigger:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+}
+
+.tabs__trigger:disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+}
+
+.tabs__trigger[data-state="active"] {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.tabs__content {
+    display: none;
+    animation: tab-fade-in var(--transition-fast) ease-out;
+}
+
+.tabs__content[data-state="active"] {
+    display: block;
+}
+
+@keyframes tab-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(var(--spacing-1));
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tabs__content {
+        animation: none;
+    }
+}
+
+/* Vertical: the list is a column on the inline start, the panel fills the rest. */
+.tabs--vertical {
+    flex-direction: row;
+    gap: var(--spacing-6);
+}
+
+.tabs--vertical .tabs__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-2);
+    margin-bottom: 0;
+    border-bottom: none;
+    border-inline-end: var(--border-width-default) solid var(--color-border);
+    padding-inline-end: var(--spacing-4);
+}
+
+.tabs--vertical .tabs__trigger {
+    margin-bottom: 0;
+    margin-inline-end: calc(-1 * var(--border-width-default) - var(--spacing-4));
+    padding: var(--tabs-trigger-padding) var(--spacing-4) var(--tabs-trigger-padding) 0;
+    text-align: start;
+    border-bottom: none;
+    border-inline-end: var(--border-width-default) solid transparent;
+}
+
+.tabs--vertical .tabs__trigger[data-state="active"] {
+    border-inline-end-color: var(--color-primary);
+}
+
+.tabs--vertical .tabs__content {
+    flex: 1;
+    min-width: 0;
+}

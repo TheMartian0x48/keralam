@@ -1,0 +1,127 @@
+/* Skeleton Component Styles
+ *
+ * Loading placeholder with shimmer animation for improved perceived performance.
+ * Supports text, circular, and rectangular variants with multiple sizes.
+ *
+ * Structure:
+ *   .skeleton              - Single skeleton element
+ *   .skeleton-group        - Container for multiple text lines
+ *
+ * Modifiers:
+ *   --text                 - Text line variant (default)
+ *   --circular             - Round avatar/icon placeholder
+ *   --rectangular          - Image/card placeholder
+ *   --sm/--md/--lg         - Size variants
+ *   --animated             - Shimmer animation enabled
+ *
+ * CSS Variables (customizable):
+ *   --skeleton-bg          - Base background color (default: --color-bg-tertiary)
+ *   --skeleton-highlight   - Shimmer highlight color (default: --color-bg-secondary)
+ *   --skeleton-duration    - Animation duration (default: 1.5s)
+ */
+
+/* Base skeleton styles */
+.skeleton {
+    --skeleton-bg: var(--color-bg-tertiary);
+    --skeleton-highlight: var(--color-bg-secondary);
+    --skeleton-duration: 1.5s;
+
+    display: block;
+    background-color: var(--skeleton-bg);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Text variant (default) - thin horizontal lines */
+.skeleton--text {
+    border-radius: var(--radius-sm);
+    width: 100%;
+}
+
+.skeleton--text.skeleton--sm {
+    height: var(--spacing-3); /* 12px */
+}
+
+.skeleton--text.skeleton--md {
+    height: var(--spacing-4); /* 16px */
+}
+
+.skeleton--text.skeleton--lg {
+    height: var(--spacing-6); /* 24px */
+}
+
+/* Circular variant - avatars, icons */
+.skeleton--circular {
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+}
+
+.skeleton--circular.skeleton--sm {
+    width: var(--spacing-8);  /* 32px */
+    height: var(--spacing-8);
+}
+
+.skeleton--circular.skeleton--md {
+    width: var(--spacing-12); /* 48px */
+    height: var(--spacing-12);
+}
+
+.skeleton--circular.skeleton--lg {
+    width: var(--spacing-16); /* 64px */
+    height: var(--spacing-16);
+}
+
+/* Rectangular variant - images, cards */
+.skeleton--rectangular {
+    border-radius: var(--radius-default);
+    width: 100%;
+}
+
+.skeleton--rectangular.skeleton--sm {
+    height: var(--spacing-16); /* 64px */
+}
+
+.skeleton--rectangular.skeleton--md {
+    height: var(--spacing-32); /* 128px */
+}
+
+.skeleton--rectangular.skeleton--lg {
+    height: 12rem; /* 192px */
+}
+
+/* Shimmer animation - GPU accelerated with transform */
+.skeleton--animated::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--skeleton-highlight),
+        transparent
+    );
+    animation: skeleton-shimmer var(--skeleton-duration) infinite;
+    will-change: transform;
+}
+
+@keyframes skeleton-shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Skeleton group for multiple text lines */
+.skeleton-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+}
+
+/* Respect reduced motion preference - accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .skeleton--animated::after {
+        animation: none;
+        opacity: 0;
+    }
+}

@@ -1,0 +1,61 @@
+/* Divider Component Styles
+ *
+ * A visual separator for content sections.
+ * Supports horizontal (default) and vertical orientations.
+ * Horizontal dividers can optionally include a text label.
+ */
+
+.divider {
+    font-family: var(--font-primary);
+}
+
+/* Standard Horizontal (hr). It resets the browser's default hr border and margin
+ * itself, because the base no longer does that for every orientation. */
+hr.divider--horizontal {
+    border: none;
+    border-top: var(--border-width-default) solid var(--color-border);
+    width: 100%;
+    margin: var(--spacing-4) 0;
+    padding: 0;
+}
+
+/* Labelled Horizontal (div) */
+div.divider--labelled {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+    margin: var(--spacing-4) 0;
+    padding: 0;
+}
+
+.divider__line {
+    flex-grow: 1;
+    border-top: var(--border-width-default) solid var(--color-border);
+}
+
+.divider__label {
+    padding: 0 var(--spacing-3);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-default);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+}
+
+/* Vertical. height is auto on purpose: a flex item only stretches along the cross
+ * axis when its cross size is auto, so align-self: stretch fills the row (a toolbar,
+ * a button group). Outside a flex or grid parent it falls back to min-height. */
+.divider--vertical {
+    display: inline-block;
+    width: var(--border-width-default);
+    height: auto;
+    min-height: var(--spacing-4);
+    align-self: stretch;
+    margin: 0 var(--spacing-2);
+    padding: 0;
+    border: none;
+    vertical-align: middle;
+    background-color: var(--color-border);
+}

@@ -1,0 +1,169 @@
+/* Progress Component Styles
+ *
+ * Linear and circular progress indicators for showing completion status.
+ * Determinate shows exact progress; indeterminate is for an unknown duration.
+ *
+ * Structure (Linear):
+ *   .progress-container
+ *     .progress-header
+ *       .progress-label
+ *       .progress-value
+ *     .progress.progress--sm|md|lg     - the track; the size owns its height
+ *       .progress__bar
+ *
+ * Structure (Circular):
+ *   .circular-progress                 - the progressbar
+ *     .circular-progress__ring         - a conic-gradient with the middle cut out
+ *     .circular-progress__content      - optional percentage in the middle
+ *
+ * The ring is drawn with CSS, not SVG: the percentage is one custom property, so there is
+ * no circumference to compute and the ring animates between values.
+ *
+ * Custom properties on .circular-progress (set inline by the component):
+ *   --progress-diameter   - outer size
+ *   --progress-thickness  - ring width
+ *   --progress-percent    - 0 to 100
+ */
+
+.progress-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-2);
+    width: 100%;
+}
+
+.progress {
+    width: 100%;
+    background-color: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Size Variants: the track's thickness */
+.progress--sm {
+    height: 0.25rem;
+}
+
+.progress--md {
+    height: 0.5rem;
+}
+
+.progress--lg {
+    height: 0.75rem;
+}
+
+.progress__bar {
+    height: 100%;
+    background-color: var(--color-primary);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-base);
+}
+
+/* Indeterminate state */
+.progress--indeterminate .progress__bar {
+    width: 50%;
+    position: absolute;
+    left: -50%;
+    animation: progress-indeterminate 1.5s infinite linear;
+}
+
+@keyframes progress-indeterminate {
+    0% {
+        left: -50%;
+        width: 30%;
+    }
+
+    50% {
+        width: 70%;
+    }
+
+    100% {
+        left: 100%;
+        width: 30%;
+    }
+}
+
+/* Label and value styles */
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--font-size-default);
+    color: var(--color-text-secondary);
+}
+
+.progress-label {
+    font-weight: var(--font-weight-default);
+}
+
+.progress-value {
+    font-variant-numeric: tabular-nums;
+    font-weight: var(--font-weight-default);
+    color: var(--color-primary);
+}
+
+/* ========== Circular Progress ========== */
+
+.circular-progress {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+    width: var(--progress-diameter);
+    height: var(--progress-diameter);
+}
+
+/* The ring: the gradient fills the whole disc, the mask removes the middle. A conic
+ * gradient starts at twelve o'clock and runs clockwise, which is what a progress ring does. */
+.circular-progress__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(var(--color-primary) calc(var(--progress-percent) * 1%), var(--color-bg-tertiary) 0);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--progress-thickness) - 0.5px), #000 calc(100% - var(--progress-thickness) + 0.5px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - var(--progress-thickness) - 0.5px), #000 calc(100% - var(--progress-thickness) + 0.5px));
+}
+
+.circular-progress__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+    color: var(--color-text);
+}
+
+/* Indeterminate: a quarter of the ring, turning */
+.circular-progress--indeterminate .circular-progress__ring {
+    background: conic-gradient(var(--color-primary) 0 25%, var(--color-bg-tertiary) 0);
+    animation: circular-rotate 1s linear infinite;
+}
+
+@keyframes circular-rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Reduced motion: nothing moves. The bars stay visible as a still indicator. */
+@media (prefers-reduced-motion: reduce) {
+    .progress__bar {
+        transition: none;
+    }
+
+    .progress--indeterminate .progress__bar {
+        animation: none;
+        left: 0;
+        width: 100%;
+        opacity: 0.5;
+    }
+
+    .circular-progress--indeterminate .circular-progress__ring {
+        animation: none;
+    }
+}

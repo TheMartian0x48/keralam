@@ -1,0 +1,203 @@
+/* Dropdown Component Styles
+ *
+ * A collapsible menu on the native details/summary pattern. The trigger is a
+ * <summary> with its own styles: it does not depend on button.css.
+ *
+ * Structure:
+ *   details.dropdown [.dropdown--end]
+ *     summary.dropdown__trigger       - Label and caret
+ *     div.dropdown__menu              - Items, dividers and group labels
+ *
+ * Modifiers:
+ *   .dropdown--end                    - Menu aligns to the trigger's end edge
+ *   .dropdown__item--danger           - Destructive action
+ *
+ * The menu is position: absolute, so an ancestor with overflow: hidden clips it.
+ */
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-2);
+    padding: var(--spacing-1) var(--spacing-3);
+
+    font-family: var(--font-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-default);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-secondary);
+
+    background-color: transparent;
+    border: var(--border-width-default) solid transparent;
+    border-radius: var(--radius-default);
+
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+/* Remove default marker in Webkit/Chrome */
+.dropdown__trigger::-webkit-details-marker {
+    display: none;
+}
+
+.dropdown__trigger:hover {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+.dropdown__trigger:active {
+    background-color: var(--color-bg-tertiary);
+}
+
+.dropdown__trigger:focus-visible {
+    outline: var(--border-width-default) solid var(--color-primary);
+    outline-offset: var(--border-width-default);
+}
+
+.dropdown__arrow {
+    transition: transform var(--transition-fast);
+}
+
+.dropdown[open] .dropdown__arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown__menu {
+    position: absolute;
+    top: calc(100% + var(--spacing-1));
+    inset-inline-start: 0;
+    z-index: var(--z-dropdown);
+
+    min-width: 12rem;
+    padding: var(--spacing-1);
+
+    background-color: var(--color-bg-secondary);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    box-shadow: var(--shadow-lg);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-px);
+
+    /* Animation */
+    animation: dropdown-fade-in var(--transition-fast) forwards;
+    transform-origin: top inline-start;
+}
+
+.dropdown--end .dropdown__menu {
+    inset-inline-start: auto;
+    inset-inline-end: 0;
+    transform-origin: top inline-end;
+}
+
+.dropdown__item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-2) var(--spacing-3);
+
+    font-size: var(--font-size-default);
+    color: var(--color-text);
+    text-decoration: none;
+    text-align: start;
+
+    background: transparent;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    width: 100%;
+
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.dropdown__item:hover {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-primary);
+}
+
+.dropdown__item:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+}
+
+/* Danger variant */
+.dropdown__item--danger {
+    color: var(--color-danger);
+}
+
+.dropdown__item--danger:hover {
+    background-color: var(--color-danger-subtle-bg);
+    color: var(--color-danger);
+}
+
+.dropdown__item--danger:focus-visible {
+    box-shadow: var(--focus-ring-danger);
+}
+
+.dropdown__item .icon {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+}
+
+.dropdown__item:hover .icon {
+    color: currentColor;
+}
+
+/* Divider */
+.dropdown__divider {
+    height: 0;
+    margin: var(--spacing-1) 0;
+    border: none;
+    border-top: var(--border-width-default) solid var(--color-border);
+}
+
+/* Group label */
+.dropdown__label {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+@keyframes dropdown-fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .dropdown__trigger,
+    .dropdown__arrow,
+    .dropdown__item {
+        transition: none;
+    }
+
+    .dropdown__menu {
+        animation: none;
+    }
+}
+
+@media (forced-colors: active) {
+    .dropdown__trigger:focus-visible {
+        outline: var(--border-width-thick) solid CanvasText;
+    }
+}

@@ -1,0 +1,85 @@
+/* Base Styles */
+@import url('base/reset.css');
+@import url('base/variables.css');
+@import url('base/phosphor.css');
+@import url('base/typography.css');
+
+/* Quill's vendor styles, bundled directly so Keralam's component
+ * overrides below still win the cascade. */
+@import "quill/dist/quill.bubble.css";
+@import "quill-table-better/dist/quill-table-better.css";
+
+/* Component styles (alphabetically ordered) */
+@import url('components/badge.css');
+@import url('components/breadcrumb.css');
+@import url('components/button.css');
+@import url('components/link.css');
+@import url('components/icon.css');
+@import url('components/input.css');
+@import url('components/label.css');
+@import url('components/list.css');
+@import url('components/pagination.css');
+@import url('components/progress.css');
+@import url('components/radio.css');
+@import url('components/select.css');
+@import url('components/skeleton.css');
+@import url('components/slider.css');
+@import url('components/stepper.css');
+@import url('components/toggle.css');
+@import url('components/time.css');
+@import url('components/timeline.css');
+@import url('components/accordion.css');
+@import url('components/alert.css');
+@import url('components/autocomplete.css');
+@import url('components/card.css');
+@import url('components/checkbox.css');
+@import url('components/dialog.css');
+@import url('components/divider.css');
+@import url('components/drawer.css');
+@import url('components/dropdown.css');
+@import url('components/dropzone.css');
+@import url('components/editor.css');
+@import url('components/form-field.css');
+@import url('components/image-preview.css');
+@import url('components/table.css');
+@import url('components/tabs.css');
+@import url('components/textarea.css');
+@import url('components/toast.css');
+@import url('components/tooltip.css');
+
+/* Global utility classes */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-4);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* Mobile-first responsive utilities */
+@media (min-width: 640px) {
+    .container {
+        padding: 0 var(--spacing-6);
+    }
+}
+
+@media (min-width: 1024px) {
+    .container {
+        padding: 0 var(--spacing-8);
+    }
+}

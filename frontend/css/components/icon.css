@@ -1,0 +1,42 @@
+/* Icon Component Styles
+ *
+ * A Phosphor icon drawn from a font. The weight and name classes (ph-bold,
+ * ph-check, ...) come from base/phosphor.css, which tools/icons generates.
+ *
+ * Structure:
+ *   .icon        - Icon box (inline-flex)
+ *
+ * Size Variants (font-size scales the glyph, width and height reserve its box
+ * so the page does not shift while the font loads):
+ *   .icon--sm  - Small (16px)
+ *   .icon--md  - Medium (24px, default)
+ *   .icon--lg  - Large (32px)
+ *
+ * Usage:
+ *   Icons inherit color from parent. Set color on icon or parent element.
+ */
+
+.icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Size variants */
+.icon--sm {
+    width: var(--spacing-4);
+    height: var(--spacing-4);
+    font-size: var(--spacing-4);
+}
+
+.icon--md {
+    width: var(--spacing-6);
+    height: var(--spacing-6);
+    font-size: var(--spacing-6);
+}
+
+.icon--lg {
+    width: var(--spacing-8);
+    height: var(--spacing-8);
+    font-size: var(--spacing-8);
+}

@@ -1,0 +1,13 @@
+/* Named themes, bundled into assets/keralam-themes.css. Opt-in: keralam.css already has
+ * light and dark. Link this after keralam.css and set data-theme on <html>:
+ *
+ *   <html data-theme="gruvbox-dark">
+ *
+ * Each theme overrides the colour, shadow and focus-ring tokens in base/variables.css
+ * and sets color-scheme, so form controls and scrollbars match. To add one, copy a file.
+ */
+@import url('themes/gruvbox-dark.css');
+@import url('themes/gruvbox-light.css');
+@import url('themes/nord.css');
+@import url('themes/solarized-dark.css');
+@import url('themes/dracula.css');

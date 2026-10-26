@@ -1,0 +1,76 @@
+/* ImagePreview Component Styles
+ *
+ * Displays images with a specific aspect ratio and consistent styling.
+ * Shows a placeholder with icon when no image source is provided.
+ * Supports different object-fit modes for image scaling.
+ */
+
+.image-preview {
+    position: relative;
+    width: 100%;
+    background-color: var(--color-bg-secondary);
+    border-radius: var(--radius-default);
+    overflow: hidden;
+    border: var(--border-width-default) solid var(--color-border);
+
+    /* 16:9 unless the component writes aspect-ratio inline */
+    aspect-ratio: 16 / 9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-preview__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Radius modifiers; the default is the base rule */
+.image-preview--rounded {
+    border-radius: var(--radius-lg);
+}
+
+.image-preview--pilled {
+    border-radius: var(--radius-full);
+}
+
+.image-preview--square {
+    border-radius: 0;
+}
+
+/* Object-fit variants */
+.image-preview__img--contain {
+    object-fit: contain;
+}
+
+.image-preview__img--fill {
+    object-fit: fill;
+}
+
+.image-preview__img--none {
+    object-fit: none;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.image-preview__placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-2);
+    color: var(--color-text-muted);
+    padding: var(--spacing-6);
+    text-align: center;
+    font-size: var(--font-size-default);
+}
+
+.image-preview__placeholder .icon {
+    color: var(--color-text-disabled);
+    width: var(--spacing-10);
+    height: var(--spacing-10);
+}

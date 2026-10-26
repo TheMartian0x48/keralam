@@ -1,0 +1,31 @@
+# Ignore everything, then allow sources. This catches every compiled binary,
+# including ones built with -out:<name> that have no extension.
+*
+
+# Directories (so the rules below can reach files inside them)
+!*/
+
+# Tracked file types
+!*.odin
+!*.css
+!*.ts
+!*.py
+
+!readme.md
+!Makefile
+!package.json
+!package-lock.json
+!tsconfig.json
+!.npmrc
+!.gitignore
+!ols.json
+
+# Build output holds nothing worth tracking, even sources
+build/
+assets/
+node_modules/
+vendor/
+
+# Scratch directories hold nothing worth tracking, even sources
+example_tmp/
+

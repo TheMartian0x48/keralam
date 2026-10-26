@@ -1,0 +1,122 @@
+/* Accordion Component Styles
+ *
+ * A vertically stacked list of collapsible items using native <details>/<summary>.
+ * Supports three variants: basic (default), bordered, and flush.
+ *
+ * Structure:
+ *   .accordion
+ *     .accordion__item (<details>)
+ *       .accordion__summary (<summary>)
+ *         .accordion__title
+ *         .accordion__icon
+ *       .accordion__content
+ *         .accordion__body
+ */
+
+.accordion {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: var(--font-primary);
+}
+
+.accordion__item {
+    border-bottom: var(--border-width-default) solid var(--color-border);
+}
+
+.accordion__item:last-child {
+    border-bottom: none;
+}
+
+.accordion__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-default) var(--spacing-6);
+    cursor: pointer;
+    list-style: none;
+    background-color: transparent;
+    transition: background-color var(--transition-fast);
+}
+
+.accordion__summary::-webkit-details-marker {
+    display: none;
+}
+
+.accordion__summary:hover {
+    background-color: var(--color-bg-secondary);
+}
+
+.accordion__summary:focus {
+    outline: none;
+}
+
+.accordion__summary:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+}
+
+.accordion__title {
+    font-weight: var(--font-weight-default);
+    font-size: var(--font-size-base);
+    color: var(--color-text-primary);
+}
+
+.accordion__icon {
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+    transition: transform var(--transition-fast);
+}
+
+.accordion__item[open] .accordion__icon {
+    transform: rotate(180deg);
+}
+
+.accordion__content {
+    overflow: hidden;
+}
+
+.accordion__body {
+    padding: var(--spacing-default) var(--spacing-6);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-default);
+    line-height: var(--line-height-relaxed);
+}
+
+/* ========== Variants ========== */
+
+/* Basic (Default) - Simple top border */
+.accordion--basic {
+    border-top: var(--border-width-default) solid var(--color-border);
+}
+
+/* Bordered - Card-like with full border and rounded corners */
+.accordion--bordered {
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-bg);
+    overflow: hidden;
+}
+
+/* Flush - No borders, blends into container */
+.accordion--flush {
+    border: none;
+}
+
+.accordion--flush .accordion__item:first-child {
+    border-top: none;
+}
+
+.accordion--flush .accordion__item:last-child {
+    border-bottom: none;
+}
+
+.accordion--flush .accordion__summary {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.accordion--flush .accordion__body {
+    padding-left: 0;
+    padding-right: 0;
+}

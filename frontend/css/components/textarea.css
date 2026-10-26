@@ -1,0 +1,35 @@
+/* Textarea Component Styles
+ * A multi-line text field. It is an input (class "input"), so it takes the input's size,
+ * radius, error and disabled styles; this file only adds what a textarea needs on top.
+ *
+ * Classes:
+ *   - .textarea: applied alongside .input
+ *   - .textarea--resize-vertical|none|both|auto: the resize handle. Auto grows the field
+ *     with its content using field-sizing (Chrome and Edge; elsewhere it behaves as a
+ *     normal textarea and keeps the vertical handle).
+ *
+ * Height comes from the rows attribute, not from CSS. The line height and font come from
+ * .input and its size modifier, so a textarea matches the inputs beside it.
+ */
+
+textarea.textarea {
+    display: block;
+}
+
+/* Resize. Vertical is the default, so the handle is there unless asked otherwise. */
+textarea.textarea--resize-vertical {
+    resize: vertical;
+}
+
+textarea.textarea--resize-none {
+    resize: none;
+}
+
+textarea.textarea--resize-both {
+    resize: both;
+}
+
+textarea.textarea--resize-auto {
+    resize: vertical;
+    field-sizing: content;
+}

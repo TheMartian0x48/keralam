@@ -1,0 +1,426 @@
+/* Input Component Styles */
+/*
+ * Text-based form input component with multiple type support.
+ *
+ * Usage:
+ *   input(doc, {kind = .Email, placeholder = "user@example.com", size = .Large})
+ *
+ * Types: text, email, tel, number, password, url, search, date, datetime-local
+ *
+ * Classes:
+ *   - .input: Base input styles (layout, typography family, border width and style)
+ *   - .input--sm|md|lg: Size. Each owns padding, font size and line height
+ *   - .input--rounded|pilled|square: Corner radius; Default adds none
+ *   - .input--error: Error state styling
+ *   - .input--disabled: Disabled state styling
+ *
+ * Accessibility:
+ *   - Error state sets aria-invalid="true"
+ *   - Use AriaDescribedBy to link to error messages
+ */
+
+.input {
+    /* Base styles */
+    display: block;
+    width: 100%;
+
+    font-family: var(--font-family-base);
+    color: var(--color-text-primary);
+
+    background-color: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+
+    transition: all var(--transition-fast);
+
+    /* Remove default browser styles */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+/* Size variants: padding, font size and line height live here, not in the base. */
+.input--sm {
+    padding: var(--spacing-1) var(--spacing-3);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-tight);
+}
+
+.input--md {
+    padding: var(--spacing-2) var(--spacing-4);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-normal);
+}
+
+.input--lg {
+    padding: var(--spacing-3) var(--spacing-5);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-normal);
+}
+
+/* Radius modifiers (shared Radius enum). Default adds no class and keeps the base radius. */
+.input--rounded {
+    border-radius: var(--radius-lg);
+}
+
+.input--pilled {
+    border-radius: var(--radius-full);
+}
+
+.input--square {
+    border-radius: 0;
+}
+
+/* Placeholder styling */
+.input::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+}
+
+/* Focus state */
+.input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring-primary);
+}
+
+/* Focus visible for keyboard navigation */
+.input:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring-primary);
+}
+
+/* Hover state */
+.input:hover:not(:disabled):not(.input--error) {
+    border-color: var(--color-border-dark);
+}
+
+/* Error state */
+.input--error {
+    border-color: var(--color-danger);
+    background-color: var(--color-danger-subtle-bg);
+}
+
+.input--error:focus {
+    border-color: var(--color-danger);
+    box-shadow: var(--focus-ring-danger);
+}
+
+/* Disabled state */
+.input:disabled,
+.input--disabled {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-disabled);
+    border-color: var(--color-border-light);
+    cursor: not-allowed;
+    opacity: var(--opacity-muted);
+}
+
+.input:disabled::placeholder,
+.input--disabled::placeholder {
+    color: var(--color-text-disabled);
+}
+
+/* Number input - remove spinners in WebKit browsers */
+.input[type="number"]::-webkit-inner-spin-button,
+.input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Number input - remove spinners in Firefox */
+.input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* Autofill styling */
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover,
+.input:-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 1000px var(--color-bg) inset;
+    -webkit-text-fill-color: var(--color-text-primary);
+    border-color: var(--color-primary);
+}
+
+/* ========================================================
+   Range, color and file
+   These are not text boxes, so they do not use .input. Each has its own block with the
+   same modifiers: -sm|md|lg (size), -rounded|pilled|square (radius), -error, -disabled.
+   ======================================================== */
+
+/* Range ------------------------------------------------- */
+.input-range {
+    -webkit-appearance: none;
+    appearance: none;
+    display: block;
+    width: 100%;
+    height: var(--input-range-thumb);
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+.input-range--sm {
+    --input-range-track: 4px;
+    --input-range-thumb: 14px;
+}
+
+.input-range--md {
+    --input-range-track: 6px;
+    --input-range-thumb: 18px;
+}
+
+.input-range--lg {
+    --input-range-track: 8px;
+    --input-range-thumb: 24px;
+}
+
+.input-range::-webkit-slider-runnable-track {
+    height: var(--input-range-track);
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+}
+
+.input-range::-moz-range-track {
+    height: var(--input-range-track);
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-full);
+}
+
+.input-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: var(--input-range-thumb);
+    height: var(--input-range-thumb);
+    margin-top: calc((var(--input-range-track) - var(--input-range-thumb)) / 2);
+    background: var(--color-primary);
+    border: var(--border-width-default) solid var(--color-bg);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+}
+
+.input-range::-moz-range-thumb {
+    width: var(--input-range-thumb);
+    height: var(--input-range-thumb);
+    background: var(--color-primary);
+    border: var(--border-width-default) solid var(--color-bg);
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+}
+
+.input-range:hover::-webkit-slider-thumb {
+    background: var(--color-primary-dark);
+}
+
+.input-range:hover::-moz-range-thumb {
+    background: var(--color-primary-dark);
+}
+
+.input-range:focus-visible {
+    outline: none;
+    border-radius: var(--radius-full);
+    box-shadow: var(--focus-ring-primary);
+}
+
+/* Radius: the track and thumb are a pill by default, so only square changes them. */
+.input-range--square::-webkit-slider-runnable-track,
+.input-range--square::-webkit-slider-thumb {
+    border-radius: 0;
+}
+
+.input-range--square::-moz-range-track,
+.input-range--square::-moz-range-thumb {
+    border-radius: 0;
+}
+
+.input-range--error::-webkit-slider-thumb {
+    background: var(--color-danger);
+}
+
+.input-range--error::-moz-range-thumb {
+    background: var(--color-danger);
+}
+
+.input-range--error:focus-visible {
+    box-shadow: var(--focus-ring-danger);
+}
+
+.input-range:disabled,
+.input-range--disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+}
+
+/* Color ------------------------------------------------- */
+.input-color {
+    display: block;
+    width: calc(var(--input-color-size) * 1.5);
+    height: var(--input-color-size);
+    padding: 2px;
+    background-color: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input-color--sm {
+    --input-color-size: 2rem;
+}
+
+.input-color--md {
+    --input-color-size: 2.5rem;
+}
+
+.input-color--lg {
+    --input-color-size: 3rem;
+}
+
+.input-color::-webkit-color-swatch-wrapper {
+    padding: 0;
+}
+
+.input-color::-webkit-color-swatch {
+    border: none;
+    border-radius: var(--radius-sm);
+}
+
+.input-color::-moz-color-swatch {
+    border: none;
+    border-radius: var(--radius-sm);
+}
+
+.input-color:hover:not(:disabled) {
+    border-color: var(--color-border-dark);
+}
+
+.input-color:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring-primary);
+}
+
+.input-color--rounded {
+    border-radius: var(--radius-lg);
+}
+
+.input-color--pilled {
+    border-radius: var(--radius-full);
+}
+
+.input-color--square {
+    border-radius: 0;
+}
+
+.input-color--square::-webkit-color-swatch,
+.input-color--square::-moz-color-swatch {
+    border-radius: 0;
+}
+
+.input-color--pilled::-webkit-color-swatch,
+.input-color--pilled::-moz-color-swatch {
+    border-radius: var(--radius-full);
+}
+
+.input-color--error {
+    border-color: var(--color-danger);
+}
+
+.input-color--error:focus-visible {
+    border-color: var(--color-danger);
+    box-shadow: var(--focus-ring-danger);
+}
+
+.input-color:disabled,
+.input-color--disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+}
+
+/* File -------------------------------------------------- */
+.input-file {
+    display: block;
+    width: 100%;
+    font-family: var(--font-family-base);
+    color: var(--color-text-secondary);
+    background-color: var(--color-bg);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-default);
+    cursor: pointer;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.input-file--sm {
+    padding: 2px var(--spacing-2);
+    font-size: var(--font-size-sm);
+}
+
+.input-file--md {
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: var(--font-size-base);
+}
+
+.input-file--lg {
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-lg);
+}
+
+.input-file::file-selector-button {
+    margin-right: var(--spacing-3);
+    padding: var(--spacing-1) var(--spacing-3);
+    font: inherit;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-tertiary);
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.input-file:hover:not(:disabled) {
+    border-color: var(--color-border-dark);
+}
+
+.input-file:hover:not(:disabled)::file-selector-button {
+    background-color: var(--color-border);
+}
+
+.input-file:focus-visible {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: var(--focus-ring-primary);
+}
+
+.input-file--rounded {
+    border-radius: var(--radius-lg);
+}
+
+.input-file--pilled {
+    border-radius: var(--radius-full);
+}
+
+.input-file--square,
+.input-file--square::file-selector-button {
+    border-radius: 0;
+}
+
+.input-file--error {
+    border-color: var(--color-danger);
+}
+
+.input-file--error:focus-visible {
+    border-color: var(--color-danger);
+    box-shadow: var(--focus-ring-danger);
+}
+
+.input-file:disabled,
+.input-file--disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+}

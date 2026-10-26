@@ -1,0 +1,325 @@
+/* Link Component Styles
+ *
+ * An anchor for navigation. It has its own stylesheet, independent of button.css.
+ *
+ * Structure:
+ *   .link                       - Base: layout, typography, border width and style
+ *   .link--{primary|secondary|danger}   - Color family (variant)
+ *   .link--{solid|soft|outline|text}    - Fill style (shape)
+ *   .link--{sm|md|lg}                   - Size
+ *   .link--{rounded|pilled|square}      - Corner radius, Default adds none
+ *   .link--disabled                     - Not interactive
+ *
+ * The base owns only what never varies. Everything a default modifier
+ * (link--primary, link--solid, link--md) sets lives in the modifiers, so the
+ * base never fights them.
+ */
+
+.link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-2);
+
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-default);
+    text-align: center;
+    text-decoration: none;
+
+    /* Width and style only: border-color belongs to shape + variant. */
+    border-width: var(--border-width-default);
+    border-style: solid;
+    border-radius: var(--radius-default);
+
+    cursor: pointer;
+    transition: all var(--transition-base);
+
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.link:focus-visible {
+    outline: var(--border-width-default) solid var(--color-primary);
+    outline-offset: var(--border-width-default);
+}
+
+/* A disabled link has no href, so it is already not interactive; this is the visual part. */
+.link--disabled {
+    opacity: var(--opacity-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Link-only cue: underline on hover, for every shape. A button never underlines. */
+.link:hover:not(.link--disabled) {
+    text-decoration: underline;
+}
+
+/* Link-only cue: the cursor follows the target. Opening a new tab shows the
+ * alias cursor; every other target keeps the pointer from the base. */
+.link[target="_blank"]:not(.link--disabled) {
+    cursor: alias;
+}
+
+/* Size Variants */
+.link--sm {
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-tight);
+}
+
+.link--md {
+    padding: var(--spacing-1) var(--spacing-3);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-normal);
+}
+
+.link--lg {
+    padding: var(--spacing-1) var(--spacing-5);
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-relaxed);
+}
+
+/* Radius Modifiers */
+.link--rounded {
+    border-radius: var(--radius-lg);
+}
+
+.link--pilled {
+    border-radius: var(--radius-full);
+}
+
+.link--square {
+    border-radius: 0;
+}
+
+/* ========================================================
+   Solid Shape
+   ======================================================== */
+
+.link--solid.link--primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+    border-color: var(--color-primary);
+}
+
+.link--solid.link--primary:hover:not(.link--disabled) {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+}
+
+.link--solid.link--primary:active:not(.link--disabled) {
+    background-color: var(--color-primary-darker);
+    border-color: var(--color-primary-darker);
+}
+
+.link--solid.link--secondary {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+    border-color: var(--color-border);
+}
+
+.link--solid.link--secondary:hover:not(.link--disabled) {
+    background-color: var(--color-bg-tertiary);
+    border-color: var(--color-border-dark);
+}
+
+.link--solid.link--secondary:active:not(.link--disabled) {
+    background-color: var(--color-bg-primary);
+}
+
+.link--solid.link--danger {
+    background-color: var(--color-danger);
+    color: var(--color-text-inverse);
+    border-color: var(--color-danger);
+}
+
+.link--solid.link--danger:hover:not(.link--disabled) {
+    background-color: var(--color-danger-dark);
+    border-color: var(--color-danger-dark);
+}
+
+.link--solid.link--danger:active:not(.link--disabled) {
+    background-color: var(--color-danger-darker);
+    border-color: var(--color-danger-darker);
+}
+
+/* ========================================================
+   Soft Shape
+   ======================================================== */
+
+.link--soft.link--primary {
+    background-color: var(--color-primary-subtle-bg);
+    color: var(--color-primary-subtle-text);
+    border-color: transparent;
+}
+
+.link--soft.link--primary:hover:not(.link--disabled) {
+    color: var(--color-primary-dark);
+    filter: brightness(0.95);
+}
+
+.link--soft.link--primary:active:not(.link--disabled) {
+    filter: brightness(0.9);
+}
+
+.link--soft.link--secondary {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    border-color: transparent;
+}
+
+.link--soft.link--secondary:hover:not(.link--disabled) {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.link--soft.link--secondary:active:not(.link--disabled) {
+    background-color: var(--color-bg-tertiary);
+    filter: brightness(0.95);
+}
+
+.link--soft.link--danger {
+    background-color: var(--color-danger-subtle-bg);
+    color: var(--color-danger-subtle-text);
+    border-color: transparent;
+}
+
+.link--soft.link--danger:hover:not(.link--disabled) {
+    color: var(--color-danger-dark);
+    filter: brightness(0.95);
+}
+
+.link--soft.link--danger:active:not(.link--disabled) {
+    filter: brightness(0.9);
+}
+
+/* ========================================================
+   Outline Shape
+   ======================================================== */
+
+.link--outline {
+    background-color: transparent;
+}
+
+.link--outline.link--primary {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.link--outline.link--primary:hover:not(.link--disabled) {
+    background-color: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+.link--outline.link--primary:active:not(.link--disabled) {
+    background-color: var(--color-primary-dark);
+    border-color: var(--color-primary-dark);
+    color: var(--color-text-inverse);
+}
+
+.link--outline.link--secondary {
+    border-color: var(--color-border-dark);
+    color: var(--color-text-secondary);
+}
+
+.link--outline.link--secondary:hover:not(.link--disabled) {
+    background-color: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.link--outline.link--secondary:active:not(.link--disabled) {
+    background-color: var(--color-bg-secondary);
+}
+
+.link--outline.link--danger {
+    border-color: var(--color-danger);
+    color: var(--color-danger);
+}
+
+.link--outline.link--danger:hover:not(.link--disabled) {
+    background-color: var(--color-danger);
+    color: var(--color-text-inverse);
+}
+
+.link--outline.link--danger:active:not(.link--disabled) {
+    background-color: var(--color-danger-dark);
+    border-color: var(--color-danger-dark);
+    color: var(--color-text-inverse);
+}
+
+/* ========================================================
+   Text Shape
+   ======================================================== */
+
+.link--text {
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.link--text.link--primary {
+    color: var(--color-primary);
+}
+
+.link--text.link--primary:hover:not(.link--disabled) {
+    background-color: var(--color-primary-subtle-bg);
+}
+
+.link--text.link--primary:active:not(.link--disabled) {
+    background-color: var(--color-primary-subtle-bg);
+    filter: brightness(0.95);
+}
+
+.link--text.link--secondary {
+    color: var(--color-text-secondary);
+}
+
+.link--text.link--secondary:hover:not(.link--disabled) {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-primary);
+}
+
+.link--text.link--secondary:active:not(.link--disabled) {
+    background-color: var(--color-bg-tertiary);
+}
+
+.link--text.link--danger {
+    color: var(--color-danger);
+}
+
+.link--text.link--danger:hover:not(.link--disabled) {
+    background-color: var(--color-danger-subtle-bg);
+}
+
+.link--text.link--danger:active:not(.link--disabled) {
+    background-color: var(--color-danger-subtle-bg);
+    filter: brightness(0.95);
+}
+
+/* Link-only cue: a visited text link is darker. Filled shapes keep their color,
+ * and hover wins over visited because its selector is more specific. */
+.link--text.link--primary:visited {
+    color: var(--color-primary-darker);
+}
+
+.link--text.link--secondary:visited {
+    color: var(--color-text-muted);
+}
+
+.link--text.link--danger:visited {
+    color: var(--color-danger-darker);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .link {
+        transition: none;
+    }
+}
+
+/* High Contrast Mode */
+@media (forced-colors: active) {
+    .link:focus-visible {
+        outline: var(--border-width-thick) solid CanvasText;
+    }
+}

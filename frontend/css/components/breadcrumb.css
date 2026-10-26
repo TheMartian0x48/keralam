@@ -1,0 +1,100 @@
+/* Breadcrumb Component Styles
+ *
+ * Navigation component showing the user's location in a site hierarchy.
+ * Follows WAI-ARIA breadcrumb pattern for accessibility.
+ *
+ * Structure:
+ *   nav.breadcrumb
+ *     ol.breadcrumb__list
+ *       li.breadcrumb__item
+ *         a.breadcrumb__link | span.breadcrumb__text
+ *
+ * Modifiers:
+ *   --current              - Current page item (not clickable)
+ *
+ * CSS Variables (customizable):
+ *   --breadcrumb-gap       - Space between items (default: --spacing-2)
+ *   data-separator         - On each item: the separator drawn after it
+ */
+
+.breadcrumb {
+    --breadcrumb-gap: var(--spacing-2);
+}
+
+.breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--breadcrumb-gap);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-default);
+}
+
+.breadcrumb__item {
+    display: flex;
+    align-items: center;
+    gap: var(--breadcrumb-gap);
+}
+
+/* Separator drawn from each item's data-separator, so any string works.
+ * The second declaration uses the alt-text form, which marks the content as
+ * decorative so screen readers skip it. Browsers without alt-text support
+ * ignore it and keep the first. */
+.breadcrumb__item:not(:last-child)::after {
+    content: attr(data-separator);
+    content: attr(data-separator) / "";
+    color: var(--color-text-muted);
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Link styles */
+.breadcrumb__link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    white-space: nowrap;
+}
+
+.breadcrumb__link:hover {
+    color: var(--color-primary);
+    text-decoration: underline;
+}
+
+.breadcrumb__link:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+    border-radius: var(--radius-sm);
+}
+
+/* Current page text */
+.breadcrumb__text {
+    color: var(--color-text);
+    font-weight: var(--font-weight-default);
+    white-space: nowrap;
+}
+
+.breadcrumb__item--current .breadcrumb__text {
+    color: var(--color-text);
+}
+
+/* Truncation for long breadcrumbs on small screens */
+@media (max-width: 640px) {
+    .breadcrumb__link,
+    .breadcrumb__text {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+/* ---- Bordered variant ---- */
+.breadcrumb--bordered {
+    display: inline-flex;
+    background-color: var(--color-bg-secondary);
+    border: var(--border-width-default) solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-2) var(--spacing-4);
+}

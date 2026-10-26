@@ -1,0 +1,130 @@
+/* Dialog Component Styles */
+
+dialog.dialog {
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-default);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+    box-shadow: var(--shadow-xl);
+    width: 90%;
+
+    /* Ensure centering */
+    margin: auto;
+    position: fixed;
+    inset: 0;
+
+    /* Animation hooks */
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity var(--transition-fast), transform var(--transition-fast), display var(--transition-fast) allow-discrete, overlay var(--transition-fast) allow-discrete;
+}
+
+dialog.dialog[open] {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Starting style for animation - ensuring display none works with transition */
+@starting-style {
+    dialog.dialog[open] {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+/* Backdrop styling */
+dialog.dialog::backdrop {
+    background-color: var(--color-bg-overlay);
+    backdrop-filter: blur(4px);
+
+    opacity: 0;
+    transition: opacity var(--transition-fast), display var(--transition-fast) allow-discrete, overlay var(--transition-fast) allow-discrete;
+}
+
+dialog.dialog[open]::backdrop {
+    opacity: 1;
+}
+
+/* Starting style for backdrop animation */
+@starting-style {
+    dialog.dialog[open]::backdrop {
+        opacity: 0;
+    }
+}
+
+/* Size variants: each owns max-width, the base sets none. */
+dialog.dialog--sm {
+    max-width: 24rem;
+}
+
+dialog.dialog--md {
+    max-width: 32rem;
+}
+
+dialog.dialog--lg {
+    max-width: 42rem;
+}
+
+dialog.dialog--xl {
+    max-width: 56rem;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+
+    dialog.dialog,
+    dialog.dialog--sm,
+    dialog.dialog--md,
+    dialog.dialog--lg,
+    dialog.dialog--xl {
+        width: calc(100% - var(--spacing-8));
+        max-width: none;
+        margin: auto var(--spacing-4);
+    }
+}
+
+.dialog__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.dialog__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-6);
+    border-bottom: var(--border-width-default) solid var(--color-border);
+}
+
+.dialog__title {
+    margin: 0;
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+}
+
+.dialog__close-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dialog__description {
+    margin: 0;
+    padding: var(--spacing-default) var(--spacing-6) 0;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-default);
+}
+
+.dialog__body {
+    padding: var(--spacing-6);
+}
+
+.dialog__footer {
+    padding: var(--spacing-6) var(--spacing-3);
+    border-top: var(--border-width-default) solid var(--color-border);
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-4);
+    background-color: var(--color-bg-secondary);
+}

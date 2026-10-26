@@ -1,0 +1,9 @@
+/* Time Component Styles
+ *
+ * A <time> element. The text is rewritten in the reader's locale (keralam-time), so digits
+ * change width between locales and zones; tabular numerals keep a column of times aligned.
+ */
+
+.time {
+    font-variant-numeric: tabular-nums;
+}

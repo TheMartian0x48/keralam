@@ -1,0 +1,157 @@
+/* List Component Styles
+ *
+ * Displays a collection of items in a vertical layout.
+ * Supports plain, bulleted, numbered, and icon variants.
+ *
+ * Structure:
+ *   ul.list | ol.list
+ *     li.list__item
+ *       span.list__icon (optional)
+ *       span.list__content
+ *
+ * Modifiers:
+ *   --plain              - No markers (default)
+ *   --bulleted           - Bullet points
+ *   --numbered           - Numbered items
+ *   --icon               - Custom icon per item
+ *   --sm/--md/--lg       - Size: each owns the gap and the font size
+ *   --divided            - Dividers between items
+ *
+ * CSS Variables (customizable):
+ *   --list-gap           - Space between items; set by the size modifier
+ *   --list-marker-color  - Bullet/number color
+ *
+ * The global ul, ol and li rules in typography.css give lists a margin and padding of
+ * their own, so this file resets them here, on the list and on its items.
+ */
+
+.list {
+    --list-marker-color: var(--color-text-muted);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--list-gap);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Size variants */
+.list--sm {
+    --list-gap: var(--spacing-1);
+    font-size: var(--font-size-sm);
+}
+
+.list--md {
+    --list-gap: var(--spacing-2);
+    font-size: var(--font-size-base);
+}
+
+.list--lg {
+    --list-gap: var(--spacing-3);
+    font-size: var(--font-size-lg);
+}
+
+/* List item base */
+.list__item {
+    margin: 0; /* typography.css gives every li a bottom margin; the list's gap spaces the rows */
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-3);
+    color: var(--color-text);
+}
+
+/* Bulleted variant */
+.list--bulleted .list__item::before {
+    content: "•";
+    color: var(--list-marker-color);
+    font-weight: var(--font-weight-bold);
+    flex-shrink: 0;
+    line-height: inherit;
+}
+
+/* Numbered variant */
+.list--numbered {
+    counter-reset: list-counter;
+}
+
+.list--numbered .list__item {
+    counter-increment: list-counter;
+}
+
+.list--numbered .list__item::before {
+    content: counter(list-counter) ".";
+    color: var(--list-marker-color);
+    font-weight: var(--font-weight-medium);
+    font-variant-numeric: tabular-nums;
+    min-width: 1.5em;
+    flex-shrink: 0;
+}
+
+/* Icon variant */
+.list__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-text-muted);
+}
+
+.list--icon .list__icon {
+    color: var(--color-primary);
+}
+
+/* Content wrapper */
+.list__content {
+    flex: 1;
+    min-width: 0;
+}
+
+/* Active state */
+.list__item--active {
+    color: var(--color-primary);
+    font-weight: var(--font-weight-default);
+}
+
+.list__item--active .list__icon {
+    color: var(--color-primary);
+}
+
+/* Disabled state */
+.list__item--disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+}
+
+.list__item--disabled .list__icon {
+    color: var(--color-text-disabled);
+}
+
+/* Divided variant */
+.list--divided .list__item {
+    padding-bottom: var(--list-gap);
+    border-bottom: var(--border-width-default) solid var(--color-border);
+}
+
+.list--divided .list__item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* Interactive list items (when used with clickable content) */
+.list__item--interactive {
+    padding: var(--spacing-2) var(--spacing-3);
+    margin: 0 calc(-1 * var(--spacing-3));
+    border-radius: var(--radius-default);
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.list__item--interactive:hover:not(.list__item--disabled) {
+    background-color: var(--color-bg-secondary);
+}
+
+.list__item--interactive:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring-primary);
+}

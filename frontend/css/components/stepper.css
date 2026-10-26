@@ -1,0 +1,190 @@
+/* Stepper Component
+ *
+ * A progress indicator showing advancement through a sequence of steps.
+ * Supports horizontal and vertical layouts with three states: inactive, active, completed.
+ *
+ * Structure:
+ *   .stepper (<nav>)
+ *     .stepper__list (<ol>)
+ *       .stepper__item (<li>)
+ *         .stepper__indicator
+ *         .stepper__content
+ *           .stepper__title
+ *           .stepper__description
+ *
+ * The line between two steps is the item's ::after, so the last step has none.
+ *
+ * Modifiers:
+ *   --horizontal/--vertical - Layout
+ *   --sm/--md/--lg          - Size: each owns --stepper-indicator-size and the indicator text
+ */
+
+/* Component-level variables */
+.stepper {
+    --stepper-connector-thickness: var(--border-width-default);
+
+    width: 100%;
+    font-family: var(--font-primary);
+}
+
+.stepper--sm {
+    --stepper-indicator-size: 2rem;
+    --stepper-indicator-font-size: var(--font-size-sm);
+}
+
+.stepper--md {
+    --stepper-indicator-size: 2.5rem;
+    --stepper-indicator-font-size: var(--font-size-base);
+}
+
+.stepper--lg {
+    --stepper-indicator-size: 3rem;
+    --stepper-indicator-font-size: var(--font-size-lg);
+}
+
+.stepper__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+/* Base item states */
+.stepper__item {
+    position: relative;
+    box-sizing: border-box;
+}
+
+.stepper__indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--stepper-indicator-size);
+    height: var(--stepper-indicator-size);
+    border-radius: var(--radius-full);
+    font-size: var(--stepper-indicator-font-size);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-muted);
+    background-color: var(--color-bg-secondary);
+    border: var(--border-width-default) solid var(--color-border);
+    transition: background-color var(--transition-base),
+        border-color var(--transition-base),
+        color var(--transition-base);
+    z-index: 2;
+    flex-shrink: 0;
+}
+
+.stepper__item:not(:last-child)::after {
+    content: "";
+    background-color: var(--color-border);
+    transition: background-color var(--transition-base);
+    z-index: 1;
+}
+
+.stepper__title {
+    display: block;
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: var(--line-height-tight);
+}
+
+.stepper__description {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+    margin: var(--spacing-1) 0 0 0;
+}
+
+/* Active State */
+.stepper__item--active .stepper__indicator {
+    background-color: var(--color-bg);
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+}
+
+.stepper__item--active .stepper__title {
+    display: block;
+    color: var(--color-text-primary);
+}
+
+/* Completed State */
+.stepper__item--completed .stepper__indicator {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-text-inverse);
+}
+
+.stepper__item--completed .stepper__title {
+    display: block;
+    color: var(--color-text-primary);
+}
+
+.stepper__item--completed:not(:last-child)::after {
+    background-color: var(--color-primary);
+}
+
+/* Horizontal Layout */
+.stepper--horizontal .stepper__list {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.stepper--horizontal .stepper__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    text-align: center;
+    gap: var(--spacing-3);
+    padding: 0 var(--spacing-2);
+}
+
+.stepper--horizontal .stepper__item:not(:last-child)::after {
+    position: absolute;
+    top: calc(var(--stepper-indicator-size) / 2);
+    height: var(--stepper-connector-thickness);
+    left: calc(50% + (var(--stepper-indicator-size) / 2) + var(--spacing-3));
+    width: calc(100% - var(--stepper-indicator-size) - (var(--spacing-3) * 2));
+    transform: translateY(-50%);
+}
+
+/* Vertical Layout */
+.stepper--vertical .stepper__list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.stepper--vertical .stepper__item {
+    display: grid;
+    grid-template-columns: var(--stepper-indicator-size) 1fr;
+    gap: 0 var(--spacing-4);
+}
+
+.stepper--vertical .stepper__indicator {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+.stepper--vertical .stepper__content {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    padding-bottom: var(--spacing-6);
+    /* Aligns title with center of indicator circle */
+    padding-top: calc((var(--stepper-indicator-size) - var(--font-size-base) * var(--line-height-tight)) / 2);
+}
+
+.stepper--vertical .stepper__item:last-child .stepper__content {
+    padding-bottom: 0;
+}
+
+.stepper--vertical .stepper__item:not(:last-child)::after {
+    grid-column: 1;
+    grid-row: 2;
+    width: var(--stepper-connector-thickness);
+    justify-self: center;
+    margin: var(--spacing-2) 0;
+    min-height: var(--stepper-indicator-size);
+}
